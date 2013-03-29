@@ -1,0 +1,6 @@
+<project name='stdlib' url='https://code.google.com/p/haxe-stdlib' license='LGPL'>
+    <user name='yar3333'/>
+    <tag v='exception'/>
+    <description>Standard library improvements: exceptions, string triming with a trimed chars specified, min/max for integers and so on.</description>
+	<version name='1.0'>Exception class, Std.min(), Std.max(), Std.parseInt(x, defaultValue), Std.parseFloat(x, defaultValue), </version>
+</project>
