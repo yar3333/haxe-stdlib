@@ -31,7 +31,7 @@ class Std
 			&& v != 0 
 			&& v != "" 
 			&& v != "0" 
-			&& (!Std.is(v, String) || cast(v, String).toLowerCase() != "false" && cast(v, String).toLowerCase() != "off");
+			&& (!Std.is(v, String) || cast(v, String).toLowerCase() != "false" && cast(v, String).toLowerCase() != "off" && cast(v, String).toLowerCase() != "null");
     }
 	
 	public static function parseValue( x:String ) : Dynamic
