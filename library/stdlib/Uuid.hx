@@ -14,9 +14,10 @@ class Uuid
 {
 	public static function newUuid() : String
 	{
-		var time = Math.floor(Date.now().getTime());
+		var timeF = Date.now().getTime();
+		var time = Std.int(timeF - (1.0 * 0x0FFFFFFF) * Std.int(timeF / 0x0FFFFFFF));
         var uuid = getHexClientIP().substr(0, 8).rpad("0", 8) 
-				 + "-" + StringTools.hex(Math.floor(time / 0x10000), 8)
+				 + "-" + StringTools.hex(Std.int(timeF / 0x10000), 8)
 				 + "-" + StringTools.hex(time % 0x10000, 8)
 				 + "-" + StringTools.hex(Std.random(0x10000), 4)
 				 + "-" + StringTools.hex(Std.random(0x10000), 4);
