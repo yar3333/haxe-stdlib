@@ -49,9 +49,27 @@ class Exception
 			+ (innerString != "" ? "\nINNER EXCEPTION: " + innerString : "");
 	}
 	
+	public static function toText(exception:Dynamic) : String
+	{
+		var text = "EXCEPTION: ";
+		if (Std.is(exception, Exception))
+		{
+			text += exception.toString();
+		}
+		else
+		{
+			text += Std.string(exception) + "\n\tStack trace:" + Stack.toString(Stack.exceptionStack()).replace("\n", "\n\t\t");
+		}
+		return text;
+	}
+	
 	public static function rethrow(exception:Dynamic) : Void
 	{
+		#if neko
+		neko.Lib.rethrow(exception);
+		#else
 		throw wrap(exception);
+		#end
 	}
 	
 	public static function wrap(exception:Dynamic) : Exception
@@ -63,21 +81,5 @@ class Exception
 			return r;
 		}
 		return exception;
-	}
-	
-	public static function trace(e:Dynamic) : Void
-	{
-		var text = "EXCEPTION: ";
-		
-		if (Std.is(e, Exception))
-		{
-			text += e.toString();
-		}
-		else
-		{
-			text += Std.string(e) + "\n\tStack trace:" + Stack.toString(Stack.exceptionStack()).replace("\n", "\n\t\t");
-		}
-		
-		trace(text);
 	}
 }
