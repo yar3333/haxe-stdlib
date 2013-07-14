@@ -32,7 +32,7 @@ class FileSystem
 	*/
 	public static function createDirectory(path:String) : Void
 	{
-		if (path != null && path != "" && !exists(path))
+		if (!exists(path))
 		{
 			path = StringTools.replace(path, '\\', '/');
 			
@@ -54,7 +54,13 @@ class FileSystem
 							sys.FileSystem.createDirectory(dir);
 						}
 					}
-					catch (e:Dynamic) {}
+					catch (e:Dynamic)
+					{
+						if (i == dirs.length - 1)
+						{
+							Exception.rethrow(e);
+						}
+					}
 				}
 			}
 		}
@@ -65,7 +71,7 @@ class FileSystem
 	*/
 	public static function deleteFile(path:String) : Void
 	{
-		if (path != null && path != "" && exists(path))
+		if (exists(path))
 		{
 			sys.FileSystem.deleteFile(path);
 		}
