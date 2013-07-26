@@ -20,6 +20,11 @@ class Exception
 		return message + "\nStack trace:\n" + Stack.toString(stack).replace("\n", "\n\t");
 	}
 	
+	public static function string(e:Dynamic) : String
+	{
+		return Std.string(e) + (Std.is(e, Exception) ? "" : "\nStack trace:\n" + Stack.toString(Stack.exceptionStack()).replace("\n", "\n\t"));
+	}
+	
 	public static function rethrow(exception:Dynamic) : Void
 	{
 		#if neko
