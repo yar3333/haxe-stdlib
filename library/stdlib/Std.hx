@@ -70,19 +70,4 @@ class Std
    public static inline function min(a:Int, b:Int) : Int return a < b ? a : b
    
    public static inline function max(a:Int, b:Int) : Int return a > b ? a : b
-   
-	#if debug
-	public static function assert(e:Bool, message:String=null, ?pos:haxe.PosInfos) : Void
-	{
-		if (!e) 
-		{
-			if (message == null) message = "";
-			throw "ASSERT " + message + " in " + pos.fileName + " at line " + pos.lineNumber;
-		}
-	}
-	#else
-	public static inline function assert(e:Bool, errorMessage:String=null, ?pos:haxe.PosInfos) : Void
-	{
-	}
-	#end   
 }
