@@ -47,7 +47,7 @@
   <options>
     <option showHiddenPaths="False" />
     <option testMovie="Custom" />
-    <option testMovieCommand="cmd /K neko bin/index.n" />
+    <option testMovieCommand="" />
   </options>
   <!-- Plugin storage -->
   <storage />

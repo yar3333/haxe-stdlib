@@ -2,19 +2,19 @@ package stdlib;
 
 class StringTools 
 {
-	public static inline function urlEncode( s : String ) : String untyped { return std.StringTools.urlEncode(s); }
+	public static inline function urlEncode( s : String ) : String return std.StringTools.urlEncode(s);
 	
-	public static inline function urlDecode( s : String ) : String untyped { return std.StringTools.urlDecode(s); }
+	public static inline function urlDecode( s : String ) : String return std.StringTools.urlDecode(s);
 
-	public static inline function htmlEscape( s : String ) : String { return std.StringTools.htmlEscape(s); }
+	public static inline function htmlEscape( s : String ) : String return std.StringTools.htmlEscape(s);
 
-	public static inline function htmlUnescape( s : String ) : String { return std.StringTools.htmlUnescape(s); }
+	public static inline function htmlUnescape( s : String ) : String return std.StringTools.htmlUnescape(s);
 
-	public static inline function startsWith( s : String, start : String ) { return std.StringTools.startsWith(s, start); }
+	public static inline function startsWith( s : String, start : String ) return std.StringTools.startsWith(s, start);
 
-	public static inline function endsWith( s : String, end : String ) { return std.StringTools.endsWith(s, end); }
+	public static inline function endsWith( s : String, end : String ) return std.StringTools.endsWith(s, end);
 
-	public static inline function isSpace( s : String, pos : Int ) : Bool { return std.StringTools.isSpace(s, pos); }
+	public static inline function isSpace( s : String, pos : Int ) : Bool return std.StringTools.isSpace(s, pos);
 
 	public static function ltrim( s : String, chars : String = null ) : String
     {
@@ -63,17 +63,17 @@ class StringTools
         #end
     }
 
-	public static inline function rpad( s : String, c : String, l : Int ) : String { return std.StringTools.rpad(s, c, l); }
+	public static inline function rpad( s : String, c : String, l : Int ) : String return std.StringTools.rpad(s, c, l);
 
-	public static inline function lpad( s : String, c : String, l : Int ) : String { return std.StringTools.lpad(s, c, l); }
+	public static inline function lpad( s : String, c : String, l : Int ) : String return std.StringTools.lpad(s, c, l);
 
-	public static inline function replace( s : String, sub : String, by : String ) : String { return std.StringTools.replace(s, sub, by); }
+	public static inline function replace( s : String, sub : String, by : String ) : String return std.StringTools.replace(s, sub, by);
 
-	public static inline function hex( n : Int, ?digits : Int ) { return std.StringTools.hex(n, digits); }
+	public static inline function hex( n : Int, ?digits : Int ) return std.StringTools.hex(n, digits);
 
-	public static inline function fastCodeAt( s : String, index : Int ) : Int { return std.StringTools.fastCodeAt(s, index); }
+	public static inline function fastCodeAt( s : String, index : Int ) : Int return std.StringTools.fastCodeAt(s, index);
 
-	public static inline function isEOF( c : Int ) : Bool { return std.StringTools.isEOF(c); }
+	public static inline function isEOF( c : Int ) : Bool return std.StringTools.isEof(c);
     
 	public static inline function hexdec(s : String) : Int
 	{
@@ -89,7 +89,7 @@ class StringTools
 		#if php
         return untyped __call__('addcslashes', s, "\'\"\t\r\n\\");
 		#else
-		return new EReg("[\'\"\t\r\n\\\\]", "g").customReplace(s, function(re) return "\\" + re.matched(0));
+		return new EReg("[\'\"\t\r\n\\\\]", "g").map(s, function(re) return "\\" + re.matched(0));
 		#end
     }
 	
