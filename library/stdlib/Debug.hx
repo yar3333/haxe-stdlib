@@ -41,10 +41,10 @@ class Debug
 					}
 				}
 				else
-				if (c == Hash)
+				if (c == Map)
 				{
-					s = "HASH\n";
-					for (key in cast(v, Hash<Dynamic>).keys())
+					s = "Map\n";
+					for (key in cast(v, Map<String,Dynamic>).keys())
 					{
 						s += prefix + key + " => " + getDump(v.get(key), limit, level + 1, prefix);
 					}

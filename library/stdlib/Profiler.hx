@@ -23,7 +23,7 @@ class Profiler
 {
     public var enabled(default, null) : Bool;
 	
-	var blocks : Hash<Block>;
+	var blocks : Map<String,Block>;
     var opened : Array<Opened>;
 
     public function new(enabled:Bool)
@@ -32,7 +32,7 @@ class Profiler
 		
 		if (enabled)
 		{
-			blocks = new Hash<Block>();
+			blocks = new Map<String,Block>();
 			opened = [];
 		}
     }
@@ -127,7 +127,7 @@ class Profiler
 
     function traceResultsSummary(traceWidth:Int)
     {
-        var results = new Hash<Result>();
+        var results = new Map<String,Result>();
 		
         for (name in blocks.keys()) 
         {

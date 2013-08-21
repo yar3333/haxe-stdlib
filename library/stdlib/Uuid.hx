@@ -24,7 +24,7 @@ class Uuid
 		return uuid;
 	}
 	
-	static function getHexClientIP()
+	static function getHexClientIP() : String
     {
 		var ip = Web.getClientHeader("X-Real-IP");
 		if (ip == null || ip == "")

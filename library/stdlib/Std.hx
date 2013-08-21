@@ -2,11 +2,11 @@ package stdlib;
 
 class Std 
 {
-	public static inline function is( v : Dynamic, t : Dynamic ) : Bool return std.Std.is(v, t)
+	public static inline function is( v : Dynamic, t : Dynamic ) : Bool return std.Std.is(v, t);
 	
-	public static inline function string( s : Dynamic ) : String { return std.Std.string(s);  }
+	public static inline function string( s : Dynamic ) : String return std.Std.string(s);
 	
-	public static inline function int( x : Float ) : Int { return std.Std.int(x);  }
+	public static inline function int( x : Float ) : Int return std.Std.int(x);
 	
 	public static function parseInt( x : String, ?defaultValue:Int ) : Null<Int>
 	{
@@ -56,9 +56,9 @@ class Std
     /**
      * Make hash from object's fields.
      */
-	public static function hash(obj:Dynamic) : Hash<Dynamic>
+	public static function hash(obj:Dynamic) : Map<String,Dynamic>
     {
-       var r = new Hash<Dynamic>();
+       var r = new Map<String,Dynamic>();
        for (key in Reflect.fields(obj))
        {
           r.set(key, Reflect.field(obj, key));
@@ -67,7 +67,7 @@ class Std
     }
     
     
-   public static inline function min(a:Int, b:Int) : Int return a < b ? a : b
+   public static inline function min(a:Int, b:Int) : Int return a < b ? a : b;
    
-   public static inline function max(a:Int, b:Int) : Int return a > b ? a : b
+   public static inline function max(a:Int, b:Int) : Int return a > b ? a : b;
 }
