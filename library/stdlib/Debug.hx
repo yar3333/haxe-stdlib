@@ -1,5 +1,7 @@
 package stdlib;
 
+import Type;
+
 class Debug
 {
 	public static function getDump(v:Dynamic, limit=10, level=0, prefix="") : String
@@ -41,10 +43,10 @@ class Debug
 					}
 				}
 				else
-				if (c == Map)
+				if (c == haxe.ds.StringMap)
 				{
-					s = "Map\n";
-					for (key in cast(v, Map<String,Dynamic>).keys())
+					s = "StringMap\n";
+					for (key in cast(v, haxe.ds.StringMap<Dynamic>).keys())
 					{
 						s += prefix + key + " => " + getDump(v.get(key), limit, level + 1, prefix);
 					}
