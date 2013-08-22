@@ -5,27 +5,27 @@ class FileSystem
 	/**
 	*	Tells if the given file or directory exists.
 	*/
-	public static inline function exists(path:String) : Bool return sys.FileSystem.exists(path)
+	public static inline function exists(path:String) : Bool return sys.FileSystem.exists(path);
 
 	/**
 		Rename the corresponding file or directory, allow to move it accross directories as well.
 	*/
-	public static inline function rename(path:String, newpath:String) : Void sys.FileSystem.rename(path, newpath)
+	public static inline function rename(path:String, newpath:String) : Void sys.FileSystem.rename(path, newpath);
 
 	/**
 		Returns informations for the given file/directory.
 	*/
-	public static inline function stat(path:String) : sys.FileStat return sys.FileSystem.stat(path)
+	public static inline function stat(path:String) : sys.FileStat return sys.FileSystem.stat(path);
 
 	/**
 		Returns the full path for the given path which is relative to the current working directory.
 	*/
-	public static inline function fullPath(relpath:String) : String return sys.FileSystem.fullPath(relpath)
+	public static inline function fullPath(relpath:String) : String return sys.FileSystem.fullPath(relpath);
 
 	/**
 		Tells if the given path is a directory. Throw an exception if it does not exists or is not accesible.
 	*/
-	public static inline function isDirectory(path:String) : Bool return sys.FileSystem.isDirectory(path)
+	public static inline function isDirectory(path:String) : Bool return sys.FileSystem.isDirectory(path);
 
 	/**
 		Create the given directory. Recursive: the parent directory will be created too.
@@ -103,5 +103,5 @@ class FileSystem
 	/**
 		Read all the files/directories stored into the given directory.
 	*/
-	public static inline function readDirectory(path:String) : Array<String> return sys.FileSystem.readDirectory(path)
+	public static inline function readDirectory(path:String) : Array<String> return sys.FileSystem.readDirectory(path);
 }
