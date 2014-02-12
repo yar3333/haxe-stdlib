@@ -99,9 +99,14 @@ class StringTools
 		return untyped __call__('strip_tags', s);
 	}
 	
-	public static inline function format(template : String, value : Dynamic) : String
+	public static inline function format(template:String, value:Dynamic) : String
 	{
 		return untyped __call__('sprintf', template, value);
 	}
 	#end
+	
+	public static function regexEscape(s:String) : String
+	{
+		return ~/([\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|])/g.replace(s, "\\$1");
+	}
 }
