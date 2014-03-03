@@ -109,4 +109,56 @@ class StringTools
 	{
 		return ~/([\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|])/g.replace(s, "\\$1");
 	}
+	
+	public static function jsonEscape(s:String) : String
+	{
+        if (s == null) return "null";
+		
+        var r = new Utf8(s.length + Std.int(s.length/5));
+		
+        r.addChar('"'.code);
+		
+		Utf8.iter(s, function(c)
+		{
+            switch (c)
+			{
+				case "\\".code:
+					r.addChar("\\".code);
+					r.addChar("\\".code);
+					
+				case '"'.code:
+					r.addChar("\\".code);
+					r.addChar('"'.code);
+					
+				case "\t".code:
+					r.addChar("\\".code);
+					r.addChar("t".code);
+				
+				case "\n".code:
+					r.addChar("\\".code);
+					r.addChar("n".code);
+					
+				case "\r".code:
+					r.addChar("\\".code);
+					r.addChar("r".code);
+					
+				default:
+					if (c < 32)
+					{
+						r.addChar("\\".code);
+						r.addChar("u".code);
+						var t = StringTools.hex(c, 4);
+						for (i in 0...t.length) r.addChar(t.charCodeAt(i));
+					}
+					else
+					{
+						r.addChar(c);
+					}
+            }
+        });
+		
+		r.addChar('"'.code);
+		
+		return r.toString();
+	}
 }
