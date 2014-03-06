@@ -46,9 +46,10 @@ class Debug
 				if (c == haxe.ds.StringMap)
 				{
 					s = "StringMap\n";
-					for (key in cast(v, haxe.ds.StringMap<Dynamic>).keys())
+					var map = cast(v, haxe.ds.StringMap<Dynamic>);
+					for (key in map.keys())
 					{
-						s += prefix + key + " => " + getDump(v.get(key), limit, level + 1, prefix);
+						s += prefix + key + " => " + getDump(map.get(key), limit, level + 1, prefix);
 					}
 				}
 				else
