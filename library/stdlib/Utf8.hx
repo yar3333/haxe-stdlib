@@ -38,6 +38,10 @@ class Utf8 extends haxe.Utf8
 			if (found) r.addString(to);
 			else	   r.addChar(codes[i]);
 		}
+		for (i in codes.length - len + 1...codes.length)
+		{
+			r.addChar(codes[i);
+		}
 		return r.toString();
 	}
 	
