@@ -40,7 +40,7 @@ class Utf8 extends haxe.Utf8
 		}
 		for (i in codes.length - len + 1...codes.length)
 		{
-			r.addChar(codes[i);
+			r.addChar(codes[i]);
 		}
 		return r.toString();
 	}
