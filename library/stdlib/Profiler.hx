@@ -94,7 +94,9 @@ class Profiler
     
     function traceResultsNested(levelLimit:Int, traceWidth:Int)
     {
-        var results = new Array<Result>();
+        if (levelLimit <= 0) return;
+		
+		var results = new Array<Result>();
         for (name in blocks.keys()) 
         {
             var block = blocks.get(name);
