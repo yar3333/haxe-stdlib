@@ -148,7 +148,10 @@ class StringTools
 						r.addChar("\\".code);
 						r.addChar("u".code);
 						var t = StringTools.hex(c, 4);
-						for (i in 0...t.length) r.addChar(t.charCodeAt(i));
+						r.addChar(StringTools.fastCodeAt(t, 0));
+						r.addChar(StringTools.fastCodeAt(t, 1));
+						r.addChar(StringTools.fastCodeAt(t, 2));
+						r.addChar(StringTools.fastCodeAt(t, 3));
 					}
 					else
 					{
