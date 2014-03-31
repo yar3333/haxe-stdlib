@@ -1,5 +1,7 @@
 package stdlib;
 
+using StringTools;
+
 private typedef Block =
 {
     var count : Int;
@@ -19,28 +21,49 @@ private typedef Result =
     var count: Int;
 }
 
+private typedef Call =
+{
+	var name : String;
+	var subname : String;
+	var stack : Array<Call>;
+	var parent : Call;
+	var dt : Float;
+}
+
 class Profiler
 {
-    public var enabled(default, null) : Bool;
+    public var level(default, null) : Int;
 	
 	var blocks : Map<String,Block>;
     var opened : Array<Opened>;
+	var call : Call;
 
-    public function new(enabled:Bool)
+    public function new(level:Int)
     {
-        this.enabled = enabled;
+        this.level = level;
 		
-		if (enabled)
+		if (level > 0)
 		{
 			blocks = new Map<String,Block>();
 			opened = [];
+			if (level > 1)
+			{
+				call = { name:"", subname:null, stack:[], parent:null, dt:null };
+			}
 		}
     }
     
-    public function begin(name:String) : Void
+    public function begin(name:String, ?subname:String) : Void
     {
-        if (enabled)
+        if (level > 0)
 		{
+			if (level > 1)
+			{
+				var subcall : Call = { name:name, subname:subname, stack:[], parent:call, dt:0 };
+				call.stack.push(subcall);
+				call = subcall;
+			}
+			
 			if (opened.length > 0)
 			{
 				name = opened[opened.length - 1].name + '-' + name;
@@ -51,7 +74,7 @@ class Profiler
 
     public function end() : Void
     {
-        if (enabled)
+        if (level > 0)
 		{
 			if (opened.length == 0)
 			{
@@ -70,44 +93,69 @@ class Profiler
 				blocks.get(b.name).count++;
 				blocks.get(b.name).dt += dt;
 			}
+			
+			if (level > 1)
+			{
+				call.dt = dt;
+				call = call.parent;
+			}
         }
     }
-
-    public function traceResults(levelLimit = 4, traceWidth = 120)
-    {
-   		if (enabled)
+	
+	public function measure(name:String, ?subname:String, f:Void->Void)
+	{
+		begin(name, subname);
+		try
 		{
-			trace("PROFILING Results");
-			
+			f();
+		}
+		catch (e:Dynamic)
+		{
+			end();
+			Exception.rethrow(e);
+		}
+		end();
+	}
+
+    public function traceResults(width = 120)
+    {
+   		if (level > 0)
+		{
 			if (opened.length > 0)
 			{
 				for (b in opened)
 				{
-					trace("WARNING: Block '" + b.name + "' not ended");
+					trace("PROFILER WARNING: Block '" + b.name + "' not ended");
 				}
 			}
 			
-			traceResultsNested(levelLimit, traceWidth);
-			traceResultsSummary(traceWidth);
+	        trace("PROFILER Summary:\n" + getGistogram(getSummaryResults(), width));
+			
+			trace("PROFILER Nested:\n" + getGistogram(getNestedResults(), width));
+			
+			if (level > 1)
+			{
+				trace("PROFILER Calls:\n" + getGistogram(getCallStackResults(), width));
+			}
         }
     }
-    
-    function traceResultsNested(levelLimit:Int, traceWidth:Int)
-    {
-        if (levelLimit <= 0) return;
+	
+	public function getNestedResults() : Array<Result>
+	{
+        if (level < 1) return [];
 		
-		var results = new Array<Result>();
+		var r = [];
         for (name in blocks.keys()) 
         {
             var block = blocks.get(name);
-            results.push( {
+            r.push( {
                  name: name
                 ,dt: block.dt
                 ,count: block.count
             });
         }
         
-        results.sort(function(a, b)
+        r.sort(function(a, b)
         {
             var ai = a.name.split('-');
             var bi = b.name.split('-');
@@ -122,14 +170,15 @@ class Profiler
             
             return Std.int((b.dt - a.dt) * 1000);
         });
-
-        trace("PROFILING Nested:");
-        traceGistogram(Lambda.filter(results, function(result) return result.name.split('-').length <= levelLimit), traceWidth);
-    }
-
-    function traceResultsSummary(traceWidth:Int)
+		
+		return r;
+	}
+    
+    public function getSummaryResults() : Array<Result>
     {
-        var results = new Map<String,Result>();
+        if (level < 1) return [];
+		
+		var results = new Map<String,Result>();
 		
         for (name in blocks.keys()) 
         {
@@ -149,12 +198,48 @@ class Profiler
         {
             return Std.int((b.dt - a.dt) * 1000);
         });
-
-        trace("PROFILING Summary:");
-        traceGistogram(values, traceWidth);
+		
+		return values;
     }
+	
+	public function getCallStackResults() : Array<Result>
+	{
+		return level > 1 ? callStackToResults(call, 0) : [];
+	}
+	
+	public function getCallStack() : Dynamic
+	{
+		return cloneCall(call).stack;
+	}
+	
+	function cloneCall(c:Call) : Dynamic
+	{
+		var dt = c.dt != null ? Std.string(Math.round(c.dt * 1000)).lpad(" ", 4) : "";
+		var name = dt + " " + c.name + (c.subname != null ? " / " + c.subname : "");
+		if (c.stack != null && c.stack.length > 0)
+		{
+			return 
+			{
+				name: name,
+				stack: c.stack.map(function(e) return cloneCall(e))
+			}
+		}
+		return name;
+	}
+	
+	function callStackToResults(call:Call, indent:Int) : Array<Result>
+	{
+		var r = [];
+		for (c in call.stack)
+		{
+			var prefix = ""; for (i in 0...indent) prefix += "  ";
+			r.push( { name:prefix + c.name + (c.subname != null ? " / " + c.subname : ""), dt:c.dt, count:1  } );
+			r = r.concat(callStackToResults(c, indent + 2));
+		}
+		return r;
+	}
     
-    function traceGistogram(results:Iterable<Result>, traceWidth:Int)
+    public function getGistogram(results:Iterable<Result>, width:Int)
     {
 		var maxLen = 0;
 		var maxDT = 0.0;
@@ -166,17 +251,23 @@ class Profiler
 			maxCount = Std.int(Math.max(maxCount, result.count));
 		}
 		
-		var maxW = traceWidth - maxLen - Std.string(maxCount).length;
-		if (maxW < 1) maxW = 1;
+		var countLen = maxCount > 1 ? Std.string(maxCount).length : 0;
 		
+		var maxW = Std.max(1, width - maxLen - countLen);
+		
+		var r = "";
 		for (result in results)
 		{
-			trace(
-				  StringTools.lpad(Std.string(Std.int(result.dt*1000)), "0", Std.string(Std.int(maxDT*1000)).length) + " | "
-				+ StringTools.rpad(StringTools.rpad('', '*', Math.round(result.dt / maxDT * maxW)), ' ', maxW)
-				+ " | " + StringTools.rpad(result.name, " ", maxLen)
-				+ " [" + StringTools.rpad(Std.string(result.count), " ", Std.string(maxCount).length) + " time(s)]"
-			);
+			
+			r += StringTools.lpad(Std.string(Std.int(result.dt * 1000)), "0", Std.string(Std.int(maxDT * 1000)).length) + " | ";
+			r += StringTools.rpad(StringTools.rpad('', '*', Math.round(result.dt / maxDT * maxW)), ' ', maxW) + " | ";
+			r += StringTools.rpad(result.name, " ", maxLen);
+			if (countLen > 0)
+			{
+				r += " [" + StringTools.rpad(Std.string(result.count), " ", countLen) + " time(s)]";
+			}
+			r += "\n";
 		}
+		return r;
     }
 }
