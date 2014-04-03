@@ -207,21 +207,22 @@ class Profiler
 		return level > 1 ? callStackToResults(call, 0) : [];
 	}
 	
-	public function getCallStack() : Dynamic
+	public function getCallStack(minDt = 0) : Dynamic
 	{
-		return cloneCall(call).stack;
+		return cloneCall(call, minDt).stack;
 	}
 	
-	function cloneCall(c:Call) : Dynamic
+	function cloneCall(c:Call, minDt:Float) : Dynamic
 	{
 		var dt = c.dt != null ? Std.string(Math.round(c.dt * 1000)).lpad(" ", 4) : "";
 		var name = dt + " " + c.name + (c.subname != null ? " / " + c.subname : "");
-		if (c.stack != null && c.stack.length > 0)
+		var stack = c.stack != null ? c.stack.filter(function(e) return Math.round(e.dt * 1000) >= minDt) : [];
+		if (stack.length > 0)
 		{
 			return 
 			{
 				name: name,
-				stack: c.stack.map(function(e) return cloneCall(e))
+				stack: stack.map(function(e) return cloneCall(e, minDt))
 			}
 		}
 		return name;
