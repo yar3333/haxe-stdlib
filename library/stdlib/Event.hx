@@ -1,24 +1,29 @@
 package stdlib;
 
-class Event<SenderType, EventArgsType>
+class Event<EventArgsType>
 {
-	var sender : SenderType;
-	var handlers : Array<SenderType->EventArgsType->Void>;
+	var sender : Dynamic;
+	var handlers : Array<Dynamic->EventArgsType->Void>;
 	
-	public function new(sender:SenderType) 
+	public function new(sender:Dynamic) 
 	{
 		this.sender = sender;
 		handlers = [];
 	}
 	
-	public function bind(handler:SenderType->EventArgsType->Void) : Void
+	public function bind(handler:Dynamic->EventArgsType->Void) : Void
 	{
 		handlers.push(handler);
 	}
 	
-	public function unbind(handler:SenderType->EventArgsType->Void) : Void
+	public function unbind(handler:Dynamic->EventArgsType->Void) : Void
 	{
 		while (handlers.remove(handler)) {};
+	}
+	
+	public function unbindAll()
+	{
+		handlers = [];
 	}
 	
 	public function call(args:EventArgsType) : Void

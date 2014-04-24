@@ -92,7 +92,14 @@ class Debug
 		if (!e) 
 		{
 			if (message == null) message = "";
-			throw "ASSERT " + message + " in " + pos.fileName + " at line " + pos.lineNumber;
+			
+			var s = "ASSERT " + message + " in " + pos.fileName + " at line " + pos.lineNumber;
+			
+			#if js
+			s += "\nException stack:" + haxe.CallStack.toString(haxe.CallStack.callStack().slice(1));
+			#end
+			
+			throw s;
 		}
 	}
 	#else
