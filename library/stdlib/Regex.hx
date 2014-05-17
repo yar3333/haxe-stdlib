@@ -89,6 +89,7 @@ class Regex
 		{
 			flags = tail.substr(0, n).trim();
 			excepts = unescape(tail.substr(n + 1).trim());
+			if (excepts == "") excepts = null;
 		}
 	}
 	
@@ -164,7 +165,7 @@ class Regex
 				else
 				if (c == "t") r += "\t";
 				else
-				r += c;
+				r += "\\" + c;
 			}
 			else
 			{
