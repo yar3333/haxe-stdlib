@@ -4,8 +4,8 @@
   "tags": ["exception"],
   "description": "Standard library improvements: exceptions, string triming with a trimed chars specified, min/max for integers and so on.",
   "contributors": ["yar3333"],
-  "releasenote": "Serializer.run() with the cache argument added.",
-  "version": "1.1.1",
+  "releasenote": "+Event; +Utf8.replace(); +StringTools.regexEscape(); +StringTools.jsonEscape(); +Std.array(); +Std.sign()",
+  "version": "1.2.0",
   "url": "https://code.google.com/p/haxe-stdlib",
   "dependencies": {}
 }
