@@ -2,8 +2,7 @@
 
 Light library with a basic stuff: events, dumps, regexps, exceptions, uuids.
 
-### Std class ###
-
+### Std class extends std.Std ###
 ```
 #!haxe
 Std.parseInt(s, defaultValue)
@@ -15,5 +14,16 @@ Std.min(n)            // min for Int
 Std.max(n)            // max for Int
 Std.sign(f)           // return -1 / 0 / +1
 Std.array(it)         // return array from iterator: Std.array(map.keys())
-Std.isnull(a, b)      // return a != null ? a : b
+Std.ifnull(a, b)      // return a != null ? a : b
+```
+
+### StringTools class extends std.StringTools ###
+```
+#!haxe
+StringTools.ltrim(s, chars)
+StringTools.rtrim(s, chars)
+StringTools.trim(s, chars)
+StringTools.regexEscape(s)
+StringTools.jsonEscape(s)
+StringTools.addcslashes(s) // like addcslashes in php
 ```
