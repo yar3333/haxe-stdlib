@@ -64,3 +64,9 @@ Utf8.replace(text, from, to)
 var buf = new Utf8();
 buf.addString("эюя");
 ```
+
+### stdlib.Uuid class ###
+```
+#!haxe
+var s = Uuid.newUuid();
+```
