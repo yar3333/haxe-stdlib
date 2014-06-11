@@ -70,3 +70,11 @@ buf.addString("эюя");
 #!haxe
 var s = Uuid.newUuid();
 ```
+
+### stdlib.Debug class ###
+```
+#!haxe
+Debug.assert(condition, message); // throw exception if condition is false
+
+var s = Debug.getDump(obj);
+```
