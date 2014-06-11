@@ -27,3 +27,19 @@ StringTools.regexEscape(s)
 StringTools.jsonEscape(s)
 StringTools.addcslashes(s) // like addcslashes in php
 ```
+
+### Event class ###
+```
+#!haxe
+// define event with args a and b
+var click = new Event<{ a:Int, b:String }>(this); // target = this
+
+// attach handler
+click.bind(function(target:Dynamic, e:{ a:Int, b:String })
+{
+    // handler code
+});
+
+// fire event
+click.call({ a:10, b:"xyz" });
+```
