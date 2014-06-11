@@ -43,3 +43,18 @@ click.bind(function(target:Dynamic, e:{ a:Int, b:String })
 // fire event
 click.call({ a:10, b:"xyz" });
 ```
+
+### Regex class ###
+Full-form regex support like /search/replacement/flags. Substitutions $0-$9 in replacement is also supported.
+```
+#!haxe
+var re = new Regex("/a(.)/$1z/g");
+trace(re.apply("3ab4")); // output is: 3bz4
+```
+ * Note 1: flag "g" is always exists, so you can omit it.
+ * Note 2: you can specify additional "except" part at the end:
+/a.c/123/g/a([xy])c - will replace "abc" to "123", but not "axc" or "ayc".
+ * Note 3: change characters case is also supported (use $vN and $^N):
+/(.)b/$^1b/g - will replace "ab" to "Ab".
+ * Note 4: you can use other delimiter than "/":
+new Regex("#abc#def#g")
