@@ -4,8 +4,8 @@
   "tags": ["exception"],
   "description": "Standard library improvements: exceptions, string triming with a trimed chars specified, min/max for integers and so on.",
   "contributors": ["yar3333"],
-  "releasenote": "+Event; +Utf8.replace(); +StringTools.regexEscape(); +StringTools.jsonEscape(); +Std.array(); +Std.sign()",
-  "version": "1.2.0",
+  "releasenote": "Std.ifnull(a, b) => a != null ? a : b",
+  "version": "1.2.1",
   "url": "https://bitbucket.org/yar3333/haxe-stdlib",
   "dependencies": {}
 }
