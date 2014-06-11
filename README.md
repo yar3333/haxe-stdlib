@@ -60,4 +60,7 @@ trace(re.apply("3ab4")); // output is: 3bz4
 ```
 #!haxe
 Utf8.replace(text, from, to)
+
+var buf = new Utf8();
+buf.addString("эюя");
 ```
