@@ -36,7 +36,7 @@ class Regex
 		var i = 1; while (i < re.length)
 		{
 			var c = re.substr(i, 1);
-			if (c == delimiter)
+			if (c == delimiter && getBackSlashAtEndCount(re.substr(1, i - 1)) % 2 == 1)
 			{
 				i++;
 				break;
@@ -91,6 +91,13 @@ class Regex
 			excepts = unescape(tail.substr(n + 1).trim());
 			if (excepts == "") excepts = null;
 		}
+	}
+	
+	function getBackSlashAtEndCount(s:String)
+	{
+		var r = 0;
+		while (r < s.length && s.charAt(s.length - 1 - r) == "\\") r++;
+		return r;
 	}
 	
 	public function apply(text:String, ?log:String->Void) : String
