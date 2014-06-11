@@ -2,7 +2,7 @@
 
 Light library with a basic stuff: events, dumps, regexps, exceptions, uuids.
 
-### Std class extends std.Std ###
+### stdlib.Std class extends std.Std ###
 ```
 #!haxe
 Std.parseInt(s, defaultValue)
@@ -17,7 +17,7 @@ Std.array(it)         // return array from iterator: Std.array(map.keys())
 Std.ifnull(a, b)      // return a != null ? a : b
 ```
 
-### StringTools class extends std.StringTools ###
+### stdlib.StringTools class extends std.StringTools ###
 ```
 #!haxe
 StringTools.ltrim(s, chars)
@@ -28,7 +28,7 @@ StringTools.jsonEscape(s)
 StringTools.addcslashes(s) // like addcslashes in php
 ```
 
-### Event class ###
+### stdlib.Event class ###
 ```
 #!haxe
 // define event with args a and b
@@ -44,7 +44,7 @@ click.bind(function(target:Dynamic, e:{ a:Int, b:String })
 click.call({ a:10, b:"xyz" });
 ```
 
-### Regex class ###
+### stdlib.Regex class ###
 Full-form regex support like /search/replacement/flags. Substitutions $0-$9 in replacement is also supported.
 ```
 #!haxe
@@ -52,9 +52,12 @@ var re = new Regex("/a(.)/$1z/g");
 trace(re.apply("3ab4")); // output is: 3bz4
 ```
  * Note 1: flag "g" is always exists, so you can omit it.
- * Note 2: you can specify additional "except" part at the end:
-/a.c/123/g/a([xy])c - will replace "abc" to "123", but not "axc" or "ayc".
- * Note 3: change characters case is also supported (use $vN and $^N):
-/(.)b/$^1b/g - will replace "ab" to "Ab".
- * Note 4: you can use other delimiter than "/":
-new Regex("#abc#def#g")
+ * Note 2: you can specify additional "except" part at the end: /a.c/123/g/a([xy])c - will replace "abc" to "123", but not "axc" or "ayc".
+ * Note 3: change characters case is also supported (use $vN and $^N): /(.)b/$^1b/g - will replace "ab" to "Ab".
+ * Note 4: you can use other delimiter than "/": new Regex("#abc#def#g")
+
+### stdlib.Utf8 class extends haxe.Utf8 ###
+```
+#!haxe
+Utf8.replace(text, from, to)
+```
