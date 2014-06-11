@@ -1,5 +1,6 @@
 package stdlib;
 
+import haxe.Log;
 import Type;
 
 class Debug
@@ -106,5 +107,5 @@ class Debug
 	public static inline function assert(e:Bool, message:String=null, ?pos:haxe.PosInfos) : Void
 	{
 	}
-	#end   
+	#end
 }
