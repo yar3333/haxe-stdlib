@@ -2,12 +2,12 @@ package stdlib;
 
 class Event<EventArgsType>
 {
-	var sender : Dynamic;
+	var target : Dynamic;
 	var handlers : Array<Dynamic->EventArgsType->Void>;
 	
-	public function new(sender:Dynamic) 
+	public function new(target:Dynamic) 
 	{
-		this.sender = sender;
+		this.target = target;
 		handlers = [];
 	}
 	
@@ -30,7 +30,7 @@ class Event<EventArgsType>
 	{
 		for (handler in handlers)
 		{
-			Reflect.callMethod(null, handler, [ sender, args ]);
+			Reflect.callMethod(null, handler, [ target, args ]);
 		}
 	}
 }
