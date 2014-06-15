@@ -1,5 +1,6 @@
 package stdlib;
 
+using Lambda;
 using StringTools;
 
 private typedef Block =
