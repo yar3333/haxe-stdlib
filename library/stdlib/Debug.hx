@@ -2,6 +2,7 @@ package stdlib;
 
 import haxe.Log;
 import Type;
+using Lambda;
 
 class Debug
 {
