@@ -1,3 +1,4 @@
 syntax: glob
 library/library.zip
 bin
+test/test.n
