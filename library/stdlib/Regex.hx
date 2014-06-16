@@ -10,13 +10,15 @@ using StringTools;
  * 
  * Note 1: flag "g" is always exists, so you can omit it.
  * 
- * Note 2: you can specify additional "except" part at the end:
+ * Note 2: you can use nonestandard flag "r" to repeat search&replace while string changed.
+ * 
+ * Note 3: you can specify additional "except" part at the end:
  * /a.c/123/g/a([xy])c - will replace "abc" to "123", but not "axc" or "ayc".
  * 
- * Note 3: change characters case is also supported (use $vN and $^N):
+ * Note 4: change characters case is also supported (use $vN and $^N):
  * /(.)b/$^1b/g - will replace "ab" to "Ab".
  * 
- * Note 4: you can use other delimiter than "/":
+ * Note 5: you can use other delimiter than "/":
  * new Regex("#abc#def#g")
  */
 class Regex
@@ -25,6 +27,7 @@ class Regex
 	public var replacement : String;
 	public var flags : String;
 	public var excepts : String;
+	public var repeat : Bool;
 	
 	public function new(re:String)
 	{
@@ -36,7 +39,7 @@ class Regex
 		var i = 1; while (i < re.length)
 		{
 			var c = re.substr(i, 1);
-			if (c == delimiter && getBackSlashAtEndCount(re.substr(1, i - 1)) % 2 == 1)
+			if (c == delimiter && getBackSlashAtEndCount(re.substr(1, i - 1)) % 2 == 0)
 			{
 				i++;
 				break;
@@ -91,6 +94,11 @@ class Regex
 			excepts = unescape(tail.substr(n + 1).trim());
 			if (excepts == "") excepts = null;
 		}
+		
+		if (replacement == "$-") replacement = "";
+		
+		repeat = flags.indexOf("r") >= 0;
+		flags = flags.replace("r", "").replace("g", "");
 	}
 	
 	function getBackSlashAtEndCount(s:String)
@@ -102,11 +110,25 @@ class Regex
 	
 	public function apply(text:String, ?log:String->Void) : String
 	{
-		if (replacement == "$-") replacement = "";
-		
-		var counter = 0;
-		
-		var r = new EReg(search, "g" + flags.replace("g", "")).map(text, function(re)
+		if (!repeat)
+		{
+			return applyInner(text, log);
+		}
+		else
+		{
+			while (true)
+			{
+				var old = text;
+				text = applyInner(text, log);
+				if (old == text) break;
+			}
+			return text;
+		}
+	}
+	
+	function applyInner(text:String, ?log:String->Void) : String
+	{
+		return new EReg(search, "g" + flags).map(text, function(re)
 		{
 			if (excepts != null && new EReg(excepts, "g").match(re.matched(0))) return re.matched(0);
 			
@@ -152,9 +174,8 @@ class Regex
 			
 			return s;
 		});
-		
-		return r;
 	}
+
 	
 	function unescape(s:String) : String
 	{
