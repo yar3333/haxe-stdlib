@@ -1,3 +1,4 @@
+import stdlib.Regex;
 import stdlib.Utf8;
 
 class Test extends haxe.unit.TestCase
@@ -13,8 +14,23 @@ class Test extends haxe.unit.TestCase
 	{
 		assertEquals("a&amp;b", Utf8.htmlEscape("a&b"));
 		assertEquals("abc", Utf8.htmlEscape("abc"));
-		assertEquals("ab&quot;c", Utf8.htmlEscape("ab\"c"));
+		assertEquals("ab&quot;c", Utf8.htmlEscape("ab\"c", "\""));
 		assertEquals("a\nb", Utf8.htmlEscape("a\nb"));
 		assertEquals("a&#xA;b", Utf8.htmlEscape("a\nb", "\n"));
+	}
+	
+	function test_regex()
+	{
+		var re = new Regex("/a/b/");
+		assertEquals("b", re.apply("a"));
+		
+		var re = new Regex("/(a.*)b/$1c/");
+		assertEquals("a123cz", re.apply("a123bz"));
+		
+		var re = new Regex("/(a.*)b/$1c/");
+		assertEquals("a123bcz", re.apply("a123bbz"));
+		
+		var re = new Regex("/(a.*)b/$1c/r");
+		assertEquals("a123ccz", re.apply("a123bbz"));
 	}
 }
