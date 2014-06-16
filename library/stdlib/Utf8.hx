@@ -109,7 +109,7 @@ class Utf8 extends haxe.Utf8
 	
 	public static function htmlEscape(utf8Str:String, chars="") : String
 	{
-		chars = "&<>\"" + chars;
+		chars = "&<>" + chars;
 		
 		var r = new Utf8();
 		
