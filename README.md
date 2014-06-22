@@ -103,8 +103,23 @@ profiler.traceResults();
 ```
 
 #### Collect data by macro ####
+Use "@:build(stdlib.Profiler.build(full_path_to_static_profiler_var))" to enable profiling for classes and "@profile" before class/method to specify profiling all/specified class methods:
+```
+#!haxe
 class Main
 {
-
+    public static var profiler = new stdlib.Profiler();
+    
+    static function main()
+    {
+        var obj = new MyClassToProfile();
+        obj.f();
+    }
 }
 
+@:build(stdlib.Profiler.build(Main.profiler))
+class MyClassToProfile
+{
+    @profile public function f() {  trace("f() called"); }
+}
+```
