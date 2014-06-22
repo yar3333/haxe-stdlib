@@ -111,7 +111,7 @@ class Profiler
         }
     }
 	
-	public function measureVoid(name:String, ?subname:String, f:Void->Void)
+	public function measure(name:String, ?subname:String, f:Void->Void)
 	{
 		begin(name, subname);
 		try
@@ -126,7 +126,7 @@ class Profiler
 		end();
 	}
 	
-	public function measure<T>(name:String, ?subname:String, f:Void->T)
+	public function measureResult<T>(name:String, ?subname:String, f:Void->T)
 	{
 		begin(name, subname);
 		var r : T = null;
@@ -299,7 +299,7 @@ class Profiler
     }
 	
 	/**
-	 * Macro to attach measure() to methods marked as @profile.
+	 * Macro to attach measureResult() to methods marked as @profile.
 	 */
 	public static macro function build(profile:haxe.macro.Expr.ExprOf<Profiler>) : Array<haxe.macro.Expr.Field>
 	{
@@ -322,11 +322,11 @@ class Profiler
 						
 						if (isVoid(f.ret))
 						{
-							f.expr = macro { ${profile}.measureVoid($v{name}, function() ${f.expr} ); };
+							f.expr = macro { ${profile}.measure($v{name}, function() ${f.expr} ); };
 						}
 						else
 						{
-							f.expr = macro { return ${profile}.measure($v{name}, function() ${f.expr} ); };
+							f.expr = macro { return ${profile}.measureResult($v{name}, function() ${f.expr} ); };
 						}
 						
 					default:
