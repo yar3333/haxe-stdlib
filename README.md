@@ -90,17 +90,18 @@ var profiler = new Profiler(5); // 5 = collect data deep level
 
 profiler.measure("myCodeA", function()
 {
-    // code to mesure duration
+    // code to measure duration
 });
 
-profiler.measure("myCodeB", function()
+var r = profiler.measureResult("myCodeB", function()
 {
-    // code to mesure duration
+    // code to measure duration
+    return "abc";
 });
 ```
 
 #### Collect data by macro ####
-Use "@:build(stdlib.Profiler.build(full_path_to_static_profiler_var))" to enable profiling for classes and "@profile" before class/method to specify profiling all/specified class methods:
+Use **@:build(stdlib.Profiler.build(full_path_to_static_profiler_var))** to enable profiling for classes and **@ profile** (without space) before class/method to specify profiling all/specified class methods:
 ```
 #!haxe
 class Main
@@ -127,11 +128,11 @@ class MyClassToProfile
 // trace summary
 profiler.traceResults();
 
-// trace all calls as linear array
-trace(profiler.getCallStackResults()); 
+// get all calls as linear array
+var results = profiler.getCallStackResults();
 
-// trace all calls tree;
-// method getCallStack() is very useful to generate xml-view of all measured calls
-trace(profiler.getCallStack()); 
-
+// get all calls as tree
+var callTree = profiler.getCallStack();
+//it is very useful to generate human-readable json from this
+trace(Json.stringify({ name:"myApp", stack:callTree }));
 ```
