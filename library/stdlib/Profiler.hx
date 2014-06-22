@@ -297,4 +297,60 @@ class Profiler
 		}
 		return r;
     }
+	
+	/**
+	 * Macro to attach measure() to methods marked as @profile.
+	 */
+	public static macro function build(profile:haxe.macro.Expr.ExprOf<Profiler>) : Array<haxe.macro.Expr.Field>
+	{
+		var printer = new haxe.macro.Printer("    ");
+		
+		var clas = haxe.macro.Context.getLocalClass().get();
+		var fields : Array<haxe.macro.Expr.Field> = haxe.macro.Context.getBuildFields();
+		
+		var profileAllMethods = clas.meta.has("profile");
+		for (field in fields)
+		{
+			if (profileAllMethods || Lambda.exists(field.meta, function(e) return e.name == "profile"))
+			{
+				switch (field.kind)
+				{
+					case haxe.macro.Expr.FieldType.FFun(f):
+						var name = clas.pack.join(".");
+						if (name.length > 0) name += ".";
+						name += clas.name + "." + field.name;
+						
+						if (isVoid(f.ret))
+						{
+							f.expr = macro { ${profile}.measureVoid($v{name}, function() ${f.expr} ); };
+						}
+						else
+						{
+							f.expr = macro { return ${profile}.measure($v{name}, function() ${f.expr} ); };
+						}
+						
+					default:
+				}
+			}
+		}
+		
+		return fields;
+	}		
+	
+	#if macro
+	static function isVoid(t:Null<haxe.macro.Expr.ComplexType>) : Bool
+	{
+		if (t != null)
+		{
+			switch (t)
+			{
+				case haxe.macro.Expr.ComplexType.TPath(p):
+					return p.name == "Void" && p.pack.length == 0 && p.sub == null
+						|| p.name == "StdTypes" && p.pack.length == 0 && p.sub == "Void";
+				default:
+			}
+		}
+		return false;
+	}
+	#end
 }
