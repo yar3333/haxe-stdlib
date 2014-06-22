@@ -61,6 +61,8 @@ trace(re.apply("3ab4")); // output is: 3bz4
 ```
 #!haxe
 Utf8.replace(text, from, to)
+Utf8.htmlEscape(s, chars)
+Utf8.htmlUnescape(s)
 
 var buf = new Utf8();
 buf.addString("эюя");
@@ -79,3 +81,30 @@ Debug.assert(condition, message); // throw exception if condition is false
 
 var s = Debug.getDump(obj);
 ```
+
+### stdlib.Profiler class ###
+#### Manual collect data ####
+```
+#!haxe
+var profiler = new Profiler(5); // 5 = collect data deep level
+
+profiler.measure("myCodeA", function()
+{
+    // code to mesure duration
+});
+
+profiler.measure("myCodeB", function()
+{
+    // code to mesure duration
+});
+
+profiler.traceResults();
+profiler.traceResults();
+```
+
+#### Collect data by macro ####
+class Main
+{
+
+}
+
