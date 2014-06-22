@@ -97,9 +97,6 @@ profiler.measure("myCodeB", function()
 {
     // code to mesure duration
 });
-
-profiler.traceResults();
-profiler.traceResults();
 ```
 
 #### Collect data by macro ####
@@ -122,4 +119,19 @@ class MyClassToProfile
 {
     @profile public function f() {  trace("f() called"); }
 }
+```
+
+#### Getting collected data ####
+```
+#!haxe
+// trace summary
+profiler.traceResults();
+
+// trace all calls as linear array
+trace(profiler.getCallStackResults()); 
+
+// trace all calls tree;
+// method getCallStack() is very useful to generate xml-view of all measured calls
+trace(profiler.getCallStack()); 
+
 ```
