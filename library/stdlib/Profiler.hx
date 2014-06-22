@@ -125,6 +125,23 @@ class Profiler
 		}
 		end();
 	}
+	
+	public function measure<T>(name:String, ?subname:String, f:Void->T)
+	{
+		begin(name, subname);
+		var r : T = null;
+		try
+		{
+			r = f();
+		}
+		catch (e:Dynamic)
+		{
+			end();
+			Exception.rethrow(e);
+		}
+		end();
+		return r;
+	}
 
     public function traceResults(width = 120)
     {
