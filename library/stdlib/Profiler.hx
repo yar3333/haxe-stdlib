@@ -69,7 +69,11 @@ class Profiler
 			{
 				name = opened[opened.length - 1].name + '-' + name;
 			}
+			#if sys
 			opened.push( { name:name, time:Sys.time() } );
+			#else
+			opened.push( { name:name, time:Date.now().getTime() / 1000 } );
+			#end
 		}
     }
 
@@ -83,7 +87,11 @@ class Profiler
 			}
 			
 			var b = opened.pop();
+			#if sys
 			var dt = Sys.time() - b.time;
+			#else
+			var dt = Date.now().getTime() / 1000 - b.time;
+			#end
 			
 			if (!blocks.exists(b.name))
 			{
@@ -103,7 +111,7 @@ class Profiler
         }
     }
 	
-	public function measure(name:String, ?subname:String, f:Void->Void)
+	public function measureVoid(name:String, ?subname:String, f:Void->Void)
 	{
 		begin(name, subname);
 		try
