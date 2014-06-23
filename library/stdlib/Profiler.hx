@@ -301,7 +301,7 @@ class Profiler
 	/**
 	 * Macro to attach measureResult() to methods marked as @profile.
 	 */
-	public static macro function build(profile:haxe.macro.Expr.ExprOf<Profiler>) : Array<haxe.macro.Expr.Field>
+	public static macro function build(profiler:haxe.macro.Expr.ExprOf<Profiler>) : Array<haxe.macro.Expr.Field>
 	{
 		var printer = new haxe.macro.Printer("    ");
 		
@@ -322,11 +322,12 @@ class Profiler
 						
 						if (isVoid(f.ret))
 						{
-							f.expr = macro { ${profile}.measure($v{name}, function() ${f.expr} ); };
+							f.expr = macro { ${profiler}.measure($v{name}, function() : Void ${f.expr} ); };
 						}
 						else
 						{
-							f.expr = macro { return ${profile}.measureResult($v{name}, function() ${f.expr} ); };
+							var t = f.ret;
+							f.expr = macro { return ${profiler}.measureResult($v{name}, function() : $t ${f.expr} ); };
 						}
 						
 					default:
