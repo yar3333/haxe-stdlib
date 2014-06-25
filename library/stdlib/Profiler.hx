@@ -316,6 +316,7 @@ class Profiler
 		return Std.string(Std.int(dt * 1000));
 	}
 	
+	#if !noprofile
 	/**
 	 * Macro to attach measureResult() to methods marked as @profile.
 	 * Also you can mark classes as @profile to profile all methods (and mark exceptions with @noprofile).
@@ -356,7 +357,7 @@ class Profiler
 		}
 		
 		return fields;
-	}		
+	}
 	
 	#if macro
 	static function isVoid(t:Null<haxe.macro.Expr.ComplexType>) : Bool
@@ -373,5 +374,14 @@ class Profiler
 		}
 		return false;
 	}
+	#end
+	
+	#else
+	
+	public static macro function build(profiler:haxe.macro.Expr.ExprOf<Profiler>) : Array<haxe.macro.Expr.Field>
+	{
+		return null;
+	}
+	
 	#end
 }
