@@ -233,6 +233,19 @@ class Profiler
 		return level > 1 ? callStackToResults(call, 0) : [];
 	}
 	
+	public function getCallStackResultsAsText() : String
+	{
+		var results = getCallStackResults();
+		
+		var maxNameLen = 0; for (result in results) maxNameLen = Std.max(maxNameLen, result.name.length);
+		
+		return results.map(function(e)
+		{
+			return dtAsStr(e.dt).lpad("0", 4) + " | " + e.name.rpad(" ", maxNameLen - e.name.length);
+		}
+		).join("\n");
+	}
+	
 	public function getCallStack(minDt = 0) : Dynamic
 	{
 		return cloneCall(call, minDt).stack;
@@ -240,7 +253,7 @@ class Profiler
 	
 	function cloneCall(c:Call, minDt:Float) : Dynamic
 	{
-		var dt = c.dt != null ? Std.string(Math.round(c.dt * 1000)).lpad(" ", 4) : "";
+		var dt = c.dt != null ? dtAsStr(c.dt).lpad(" ", 4) : "";
 		var name = dt + " " + c.name + (c.subname != null ? " / " + c.subname : "");
 		var stack = c.stack != null ? c.stack.filter(function(e) return Math.round(e.dt * 1000) >= minDt) : [];
 		if (stack.length > 0)
@@ -286,7 +299,7 @@ class Profiler
 		for (result in results)
 		{
 			
-			r += StringTools.lpad(Std.string(Std.int(result.dt * 1000)), "0", Std.string(Std.int(maxDT * 1000)).length) + " | ";
+			r += StringTools.lpad(dtAsStr(result.dt), "0", dtAsStr(maxDT).length) + " | ";
 			r += StringTools.rpad(StringTools.rpad('', '*', Math.round(result.dt / maxDT * maxW)), ' ', maxW) + " | ";
 			r += StringTools.rpad(result.name, " ", maxLen);
 			if (countLen > 0)
@@ -298,8 +311,14 @@ class Profiler
 		return r;
     }
 	
+	function dtAsStr(dt:Float) : String
+	{
+		return Std.string(Std.int(dt * 1000));
+	}
+	
 	/**
 	 * Macro to attach measureResult() to methods marked as @profile.
+	 * Also you can mark classes as @profile to profile all methods (and mark exceptions with @noprofile).
 	 */
 	public static macro function build(profiler:haxe.macro.Expr.ExprOf<Profiler>) : Array<haxe.macro.Expr.Field>
 	{
@@ -311,8 +330,9 @@ class Profiler
 		var profileAllMethods = clas.meta.has("profile");
 		for (field in fields)
 		{
-			if (profileAllMethods || Lambda.exists(field.meta, function(e) return e.name == "profile"))
-			{
+			if ((profileAllMethods || Lambda.exists(field.meta, function(e) return e.name == "profile"))
+			 && !Lambda.exists(field.meta, function(e) return e.name == "noprofile")
+			) {
 				switch (field.kind)
 				{
 					case haxe.macro.Expr.FieldType.FFun(f):
