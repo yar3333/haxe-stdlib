@@ -331,7 +331,8 @@ class Profiler
 		var profileAllMethods = clas.meta.has("profile");
 		for (field in fields)
 		{
-			if ((profileAllMethods || Lambda.exists(field.meta, function(e) return e.name == "profile"))
+			if (!field.name.startsWith("set_")
+			 && (profileAllMethods || Lambda.exists(field.meta, function(e) return e.name == "profile"))
 			 && !Lambda.exists(field.meta, function(e) return e.name == "noprofile")
 			) {
 				switch (field.kind)
