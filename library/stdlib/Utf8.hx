@@ -25,6 +25,7 @@ class Utf8 extends haxe.Utf8
 		var codes = []; haxe.Utf8.iter(s, function(c) codes.push(c));
 		var r = new Utf8();
 		var len = haxe.Utf8.length(from);
+		if (codes.length < len) return s;
 		for (i in 0...codes.length - len + 1)
 		{
 			var found = true;
