@@ -7,7 +7,6 @@ import php.Web;
 #elseif neko
 import neko.Web;
 #end
-
 using stdlib.StringTools;
 
 class Uuid 
@@ -39,6 +38,25 @@ class Uuid
         }
         return hex;
     }
+}
+
+#else
+
+class Uuid 
+{
+	static var counter = 0;
+	
+	public static function newUuid() : String
+	{
+		var timeF = Date.now().getTime();
+		var time = Std.int(timeF - (1.0 * 0x0FFFFFFF) * Std.int(timeF / 0x0FFFFFFF));
+        var uuid = StringTools.hex(counter++, 8) 
+				 + "-" + StringTools.hex(Std.int(timeF / 0x10000), 8)
+				 + "-" + StringTools.hex(time % 0x10000, 8)
+				 + "-" + StringTools.hex(Std.random(0x10000), 4)
+				 + "-" + StringTools.hex(Std.random(0x10000), 4);
+		return uuid;
+	}
 }
 
 #end
