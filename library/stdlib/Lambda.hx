@@ -4,8 +4,8 @@ typedef StdLambda = std.Lambda;
 
 class Lambda
 {
-   public static function findIndex<A>(it:Iterable<A>, f:A->Bool) : Int
-   {
+	public static function findIndex<A>(it:Iterable<A>, f:A->Bool) : Int
+	{
 		var n = 0;
 		for (x in it)
 		{
@@ -13,5 +13,13 @@ class Lambda
 			n++;
 		}
 		return -1;
-   }
+	}
+   
+	public static function insertRange<A>(arr:Array<A>, pos:Int, range:Array<A>) : Void
+	{
+		for (e in range)
+		{
+			arr.insert(pos++, e);
+		}
+	}
 }
