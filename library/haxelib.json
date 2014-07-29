@@ -5,7 +5,7 @@
   "description": "Standard library improvements: exceptions, string triming with a trimed chars specified, min/max for integers and so on.",
   "contributors": ["yar3333"],
   "releasenote": "Added Profile.getCallStackResultsAsText(). Added @noprofile meta. Uuid now support all targets. Added Lambda.insertRange(). Utf8 bugfixes.",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "url": "https://bitbucket.org/yar3333/haxe-stdlib",
   "dependencies": {}
 }
