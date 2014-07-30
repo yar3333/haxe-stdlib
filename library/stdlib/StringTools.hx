@@ -164,4 +164,6 @@ class StringTools
 		
 		return r.toString();
 	}
+	
+	public static function isEmpty(s:String) : Bool return s == null || s == "";
 }
