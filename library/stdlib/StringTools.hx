@@ -93,12 +93,58 @@ class StringTools
 		#end
     }
 	
-	#if php
-	public static inline function stripTags(s : String) : String
+	/**
+	 * allowedTags example: "<a><p>".
+	 */
+	public static inline function stripTags(str:String, allowedTags="") : String
 	{
-		return untyped __call__('strip_tags', s);
+		#if php
+		
+		return untyped __call__('strip_tags', str, allowedTags);
+		
+		#else
+		
+		var allowedTagsArray = [];
+		if (allowedTags != "")
+		{
+			var re = ~/[a-zA-Z0-9]+/i;
+			var pos = 0;
+			while (re.matchSub(allowedTags, pos))
+			{
+				allowedTagsArray.push(re.matched(0));
+				pos = re.matchedPos().pos + re.matchedPos().len;
+			}
+		}
+		
+		var matches = [];
+		var re = ~/<\/?[\S][^>]*>/g;
+		str = re.map(str, function(_)
+		{
+			var html = re.matched(0);
+			var allowed = false;
+			if (allowedTagsArray.length > 0)
+			{
+				var htmlLC = html.toLowerCase();
+				for (allowedTag in allowedTagsArray)
+				{
+					if (StringTools.startsWith(htmlLC, '<' + allowedTag + '>')
+					 || StringTools.startsWith(htmlLC, '<' + allowedTag + ' ')
+					 || StringTools.startsWith(htmlLC, '</' + allowedTag)
+					) {
+						allowed = true;
+						break;
+					}
+				}
+			}
+			return allowed ? html : "";
+		});
+		
+		return str;
+		
+		#end
 	}
 	
+	#if php
 	public static inline function format(template:String, value:Dynamic) : String
 	{
 		return untyped __call__('sprintf', template, value);
