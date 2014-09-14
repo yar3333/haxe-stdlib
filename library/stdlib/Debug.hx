@@ -1,7 +1,9 @@
 package stdlib;
 
+import haxe.CallStack;
 import haxe.Log;
 import Type;
+using StringTools;
 using Lambda;
 
 class Debug
@@ -106,6 +108,31 @@ class Debug
 	}
 	#else
 	public static inline function assert(e:Bool, message:String=null, ?pos:haxe.PosInfos) : Void
+	{
+	}
+	#end
+	
+	
+	#if debug
+	public static function traceStack(v:Dynamic, ?pos:haxe.PosInfos) : Void
+	{
+		var stack = CallStack.toString(CallStack.callStack()).trim();
+		
+		#if js
+		var lines = stack.split("\n").filter(function(s) return s != "Called from module");
+		var len = 0; for (line in lines) len = Std.max(len, line.indexOf("@"));
+		lines = lines.map(function(line)
+		{
+			var ss = line.split("@");
+			return ss[0] + "".rpad(" ", len - ss[0].length + 1) + ss[1];
+		});
+		stack = lines.slice(1).join("\n");
+		#end
+		
+		trace("TRACE " + (Std.is(v, String) ? v : getDump(v).trim()) + "\nStack trace:\n" + stack, pos);
+	}
+	#else
+	public static function traceStack(v:Dynamic, ?pos:haxe.PosInfos) : Void
 	{
 	}
 	#end
