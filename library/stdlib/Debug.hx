@@ -116,7 +116,7 @@ class Debug
 	#if debug
 	public static function traceStack(v:Dynamic, ?pos:haxe.PosInfos) : Void
 	{
-		var stack = CallStack.toString(CallStack.callStack()).trim();
+		var stack = CallStack.toString(CallStack.callStack()).replace("prototype<.", "").trim();
 		
 		#if js
 		var lines = stack.split("\n").filter(function(s) return s != "Called from module");
