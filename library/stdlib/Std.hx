@@ -58,27 +58,26 @@ class Std
      */
 	public static function hash(obj:Dynamic) : Map<String,Dynamic>
     {
-       var r = new Map<String,Dynamic>();
-       for (key in Reflect.fields(obj))
-       {
-          r.set(key, Reflect.field(obj, key));
-       }
-       return r;
+		var r = new Map<String,Dynamic>();
+		for (key in Reflect.fields(obj))
+		{
+			r.set(key, Reflect.field(obj, key));
+		}
+		return r;
     }
     
-    
-   public static inline function min(a:Int, b:Int) : Int return a < b ? a : b;
+	public static inline function min(a:Int, b:Int) : Int return a < b ? a : b;
    
-   public static inline function max(a:Int, b:Int) : Int return a > b ? a : b;
+	public static inline function max(a:Int, b:Int) : Int return a > b ? a : b;
    
-   public static inline function sign(n:Float) : Int return n > 0.0 ? 1 : (n < 0.0 ? -1 : 0);
+	public static inline function sign(n:Float) : Int return n > 0 ? 1 : (n < 0 ? -1 : 0);
    
-   public static function array<T>(it:Iterator<T>) : Array<T>
-   {
-	   var r = new Array<T>();
-	   for (e in it) r.push(e);
-	   return r;
-   }
-   
-   public static inline function ifnull<T:Dynamic>(a:T, b:T) return a != null ? a : b;
+	public static function array<T>(it:Iterator<T>) : Array<T>
+	{
+		var r = new Array<T>();
+		for (e in it) r.push(e);
+		return r;
+	}
+	
+	public static inline function ifnull<T:Dynamic>(a:T, b:T) return a != null ? a : b;
 }
