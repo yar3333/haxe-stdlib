@@ -22,15 +22,15 @@ class Test extends haxe.unit.TestCase
 	function test_regex()
 	{
 		var re = new Regex("/a/b/");
-		assertEquals("b", re.apply("a"));
+		assertEquals("b", re.replace("a"));
 		
 		var re = new Regex("/(a.*)b/$1c/");
-		assertEquals("a123cz", re.apply("a123bz"));
+		assertEquals("a123cz", re.replace("a123bz"));
 		
 		var re = new Regex("/(a.*)b/$1c/");
-		assertEquals("a123bcz", re.apply("a123bbz"));
+		assertEquals("a123bcz", re.replace("a123bbz"));
 		
 		var re = new Regex("/(a.*)b/$1c/r");
-		assertEquals("a123ccz", re.apply("a123bbz"));
+		assertEquals("a123ccz", re.replace("a123bbz"));
 	}
 }

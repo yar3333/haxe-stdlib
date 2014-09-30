@@ -108,74 +108,92 @@ class Regex
 		return r;
 	}
 	
-	public function apply(text:String, ?log:String->Void) : String
+	public function replace(text:String, ?log:String->Void) : String
 	{
 		if (!repeat)
 		{
-			return applyInner(text, log);
+			return replaceInner(text, log);
 		}
 		else
 		{
 			while (true)
 			{
 				var old = text;
-				text = applyInner(text, log);
+				text = replaceInner(text, log);
 				if (old == text) break;
 			}
 			return text;
 		}
 	}
 	
-	function applyInner(text:String, ?log:String->Void) : String
+	public function matchAll(text:String) : Array<{ pos:Int, len:Int, replacement:String }>
+	{
+		var r = [];
+		var re = new EReg(search, "g" + flags);
+		var i = 0; while (i < text.length && re.matchSub(text, i))
+		{
+			var p = re.matchedPos();
+			if (excepts == null || !new EReg(excepts, "g").match(re.matched(0)))
+			{
+				r.push({ pos:p.pos, len:p.len, replacement:getActualReplacement(re) });
+			}
+			i = p.pos + p.len;
+		}
+		return r;
+	}
+	
+	function replaceInner(text:String, ?log:String->Void) : String
 	{
 		return new EReg(search, "g" + flags).map(text, function(re)
 		{
 			if (excepts != null && new EReg(excepts, "g").match(re.matched(0))) return re.matched(0);
-			
-			var s = "";
-			var i = 0;
-			while (i < replacement.length)
-			{
-				var c = replacement.charAt(i++);
-				if (c != "$")
-				{
-					s += c;
-				}
-				else
-				{
-					c = replacement.charAt(i++);
-					if (c == "$")
-					{
-						s += "$";
-					}
-					else
-					{
-						var command = "";
-						if ("d0123456789".indexOf(c) < 0)
-						{
-							command = c;
-							c = replacement.charAt(i++);
-						}
-						if (c == "d") { c = replacement.substr(i, 2); i += 2; }
-						var number = Std.parseInt(c);
-						var t = try re.matched(number) catch (_:Dynamic) "";
-						if (t == null) t = "";
-						switch(command)
-						{
-							case "^": t = t.toUpperCase();
-							case "v": t = t.toLowerCase();
-						}
-						s += t;
-					}
-				}
-			}
-			
+			var s = getActualReplacement(re);
 			if (log != null) log(re.matched(0).replace("\r", "").replace("\n", "\\n") + " => " + s);
-			
 			return s;
 		});
 	}
-
+	
+	function getActualReplacement(re:EReg) : String
+	{
+		var s = "";
+		var i = 0;
+		while (i < replacement.length)
+		{
+			var c = replacement.charAt(i++);
+			if (c != "$")
+			{
+				s += c;
+			}
+			else
+			{
+				c = replacement.charAt(i++);
+				if (c == "$")
+				{
+					s += "$";
+				}
+				else
+				{
+					var command = "";
+					if ("d0123456789".indexOf(c) < 0)
+					{
+						command = c;
+						c = replacement.charAt(i++);
+					}
+					if (c == "d") { c = replacement.substr(i, 2); i += 2; }
+					var number = Std.parseInt(c);
+					var t = try re.matched(number) catch (_:Dynamic) "";
+					if (t == null) t = "";
+					switch(command)
+					{
+						case "^": t = t.toUpperCase();
+						case "v": t = t.toLowerCase();
+					}
+					s += t;
+				}
+			}
+		}
+		return s;
+	}
 	
 	function unescape(s:String) : String
 	{
