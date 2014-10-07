@@ -4,8 +4,8 @@
   "tags": ["exception"],
   "description": "Standard library improvements: exceptions, string triming with a trimed chars specified, min/max for integers and so on.",
   "contributors": ["yar3333"],
-  "releasenote": "+StringTools.stripTags()<br>\n+Add StringTools.isEmpty(s)",
-  "version": "1.4.3",
+  "releasenote": "Added Debug.traceStack. Rename regex's \"apply\" method to \"replace\". Added Regex.matchAll() method.",
+  "version": "1.5.0",
   "url": "https://bitbucket.org/yar3333/haxe-stdlib",
   "dependencies": {}
 }
