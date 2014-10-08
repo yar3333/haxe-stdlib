@@ -23,15 +23,17 @@ using StringTools;
  */
 class Regex
 {
-	public var search : String;
-	public var replacement : String;
-	public var flags : String;
-	public var excepts : String;
-	public var repeat : Bool;
+	public var search  = "";
+	public var replacement = "";
+	public var flags  = "";
+	public var excepts : String = null;
+	public var repeat = false;
 	
 	public function new(re:String)
 	{
 		re = re.trim();
+		
+		if (re.length == 0) return;
 		
 		var delimiter = re.substr(0, 1);
 		
