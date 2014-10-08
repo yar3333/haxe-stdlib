@@ -23,84 +23,91 @@ using StringTools;
  */
 class Regex
 {
-	public var search  = "";
-	public var replacement = "";
-	public var flags  = "";
-	public var excepts : String = null;
-	public var repeat = false;
+	public var search : String;
+	public var replacement : String;
+	public var flags : String;
+	public var excepts : String;
+	public var repeat : Bool;
 	
 	public function new(re:String)
 	{
 		re = re.trim();
 		
-		if (re.length == 0) return;
-		
-		var delimiter = re.substr(0, 1);
-		
-		search = "";
-		var i = 1; while (i < re.length)
+		if (re.length > 0)
 		{
-			var c = re.substr(i, 1);
-			if (c == delimiter && getBackSlashAtEndCount(re.substr(1, i - 1)) % 2 == 0)
+			var delimiter = re.substr(0, 1);
+			
+			search = "";
+			var i = 1; while (i < re.length)
 			{
+				var c = re.substr(i, 1);
+				if (c == delimiter && getBackSlashAtEndCount(re.substr(1, i - 1)) % 2 == 0)
+				{
+					i++;
+					break;
+				}
+				else
+				{
+					search += c;
+				}
 				i++;
-				break;
+			}
+			
+			replacement = "";
+			while (i < re.length)
+			{
+				var c = re.substr(i, 1);
+				if (c == delimiter)
+				{
+					i++;
+					break;
+				}
+				else
+				if (c == "\\") 
+				{
+					i++;
+					c = re.substr(i, 1);
+					if (c == "r") replacement += "\r";
+					else
+					if (c == "n") replacement += "\n";
+					else
+					if (c == "t") replacement += "\t";
+					else
+					if (c == "\\") replacement += "\\";
+					else
+					replacement += c;
+				}
+				else
+				{
+					replacement += c;
+				}
+				i++;
+			}
+			
+			var tail = re.substr(i);
+			var n = tail.indexOf(delimiter);
+			if (n < 0)
+			{
+				flags = tail;
 			}
 			else
 			{
-				search += c;
+				flags = tail.substr(0, n).trim();
+				excepts = unescape(tail.substr(n + 1).trim());
+				if (excepts == "") excepts = null;
 			}
-			i++;
-		}
-		
-		replacement = "";
-		while (i < re.length)
-		{
-			var c = re.substr(i, 1);
-			if (c == delimiter)
-			{
-				i++;
-				break;
-			}
-			else
-			if (c == "\\") 
-			{
-				i++;
-				c = re.substr(i, 1);
-				if (c == "r") replacement += "\r";
-				else
-				if (c == "n") replacement += "\n";
-				else
-				if (c == "t") replacement += "\t";
-				else
-				if (c == "\\") replacement += "\\";
-				else
-				replacement += c;
-			}
-			else
-			{
-				replacement += c;
-			}
-			i++;
-		}
-		
-		var tail = re.substr(i);
-		var n = tail.indexOf(delimiter);
-		if (n < 0)
-		{
-			flags = tail;
+			
+			if (replacement == "$-") replacement = "";
+			
+			repeat = flags.indexOf("r") >= 0;
+			flags = flags.replace("r", "").replace("g", "");
 		}
 		else
 		{
-			flags = tail.substr(0, n).trim();
-			excepts = unescape(tail.substr(n + 1).trim());
-			if (excepts == "") excepts = null;
+			search = "";
+			replacement = "";
+			flags  = "";
 		}
-		
-		if (replacement == "$-") replacement = "";
-		
-		repeat = flags.indexOf("r") >= 0;
-		flags = flags.replace("r", "").replace("g", "");
 	}
 	
 	function getBackSlashAtEndCount(s:String)
