@@ -78,6 +78,4 @@ class Std
 		for (e in it) r.push(e);
 		return r;
 	}
-	
-	public static inline function ifnull<T:Dynamic>(a:T, b:T) return a != null ? a : b;
 }
