@@ -1,6 +1,6 @@
 package stdlib;
 
-class Unserializer
+class Unserializer extends haxe.Unserializer
 {
 	public static function run(v:String, ?r:haxe.Unserializer.TypeResolver) : Dynamic
 	{
