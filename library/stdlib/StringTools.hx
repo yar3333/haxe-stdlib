@@ -212,4 +212,6 @@ class StringTools
 	}
 	
 	public static function isEmpty(s:String) : Bool return s == null || s == "";
+	
+	public static function capitalize(s:String) : String return isEmpty(s) ? s : s.substr(0, 1).toUpperCase() + s.substr(1);
 }
