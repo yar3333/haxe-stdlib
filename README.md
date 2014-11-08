@@ -14,7 +14,6 @@ Std.min(a, b)         // min for Int
 Std.max(a, b)         // max for Int
 Std.sign(f)           // return -1.0 / 0.0 / +1.0
 Std.array(it)         // return array from iterator: Std.array(map.keys())
-Std.ifnull(a, b)      // return a != null ? a : b
 ```
 
 ### stdlib.StringTools class extends std.StringTools ###
