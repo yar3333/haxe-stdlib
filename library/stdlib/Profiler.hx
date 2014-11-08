@@ -42,16 +42,7 @@ class Profiler
     public function new(level:Int)
     {
         this.level = level;
-		
-		if (level > 0)
-		{
-			blocks = new Map<String,Block>();
-			opened = [];
-			if (level > 1)
-			{
-				call = { name:"", subname:null, stack:[], parent:null, dt:null };
-			}
-		}
+		reset();
     }
     
     public function begin(name:String, ?subname:String) : Void
@@ -228,14 +219,14 @@ class Profiler
 		return values;
     }
 	
-	public function getCallStackResults() : Array<Result>
+	public function getCallStackResults(minDT=0.0) : Array<Result>
 	{
-		return level > 1 ? callStackToResults(call, 0) : [];
+		return level > 1 ? callStackToResults(minDT, call, 0) : [];
 	}
 	
-	public function getCallStackResultsAsText() : String
+	public function getCallStackResultsAsText(minDT=0.0) : String
 	{
-		var results = getCallStackResults();
+		var results = getCallStackResults(minDT);
 		
 		var maxNameLen = 0; for (result in results) maxNameLen = Std.max(maxNameLen, result.name.length);
 		
@@ -246,7 +237,7 @@ class Profiler
 		).join("\n");
 	}
 	
-	public function getCallStack(minDt = 0) : Dynamic
+	public function getCallStack(minDt=0.0) : Dynamic
 	{
 		return cloneCall(call, minDt).stack;
 	}
@@ -267,14 +258,17 @@ class Profiler
 		return name;
 	}
 	
-	function callStackToResults(call:Call, indent:Int) : Array<Result>
+	function callStackToResults(minDT:Float, call:Call, indent:Int) : Array<Result>
 	{
 		var r = [];
 		for (c in call.stack)
 		{
-			var prefix = ""; for (i in 0...indent) prefix += "  ";
-			r.push( { name:prefix + c.name + (c.subname != null ? " / " + c.subname : ""), dt:c.dt, count:1  } );
-			r = r.concat(callStackToResults(c, indent + 2));
+			if (c.dt == null || c.dt >= minDT)
+			{
+				var prefix = ""; for (i in 0...indent) prefix += "  ";
+				r.push( { name:prefix + c.name + (c.subname != null ? " / " + c.subname : ""), dt:c.dt, count:1  } );
+				r = r.concat(callStackToResults(minDT, c, indent + 2));
+			}
 		}
 		return r;
 	}
@@ -310,6 +304,19 @@ class Profiler
 		}
 		return r;
     }
+	
+	public function reset()
+	{
+		if (level > 0)
+		{
+			blocks = new Map<String,Block>();
+			opened = [];
+			if (level > 1)
+			{
+				call = { name:"", subname:null, stack:[], parent:null, dt:null };
+			}
+		}
+	}
 	
 	function dtAsStr(dt:Float) : String
 	{
