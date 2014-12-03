@@ -219,14 +219,14 @@ class Profiler
 		return values;
     }
 	
-	public function getCallStackResults(minDT=0.0) : Array<Result>
+	public function getCallStackResults(minDT=0.0, ?filter:String) : Array<Result>
 	{
-		return level > 1 ? callStackToResults(minDT, call, 0) : [];
+		return level > 1 ? callStackToResults(minDT, call, 0, filter) : [];
 	}
 	
-	public function getCallStackResultsAsText(minDT=0.0) : String
+	public function getCallStackResultsAsText(minDT=0.0, ?filter:String) : String
 	{
-		var results = getCallStackResults(minDT);
+		var results = getCallStackResults(minDT, filter);
 		
 		var maxNameLen = 0; for (result in results) maxNameLen = Std.max(maxNameLen, result.name.length);
 		
@@ -258,19 +258,27 @@ class Profiler
 		return name;
 	}
 	
-	function callStackToResults(minDT:Float, call:Call, indent:Int) : Array<Result>
+	function callStackToResults(minDT:Float, call:Call, indent:Int, ?filter:String) : Array<Result>
 	{
 		var r = [];
 		for (c in call.stack)
 		{
-			if (c.dt == null || c.dt >= minDT)
+			if ((c.dt == null || c.dt >= minDT) && callStackHasName(c, filter))
 			{
 				var prefix = ""; for (i in 0...indent) prefix += "  ";
 				r.push( { name:prefix + c.name + (c.subname != null ? " / " + c.subname : ""), dt:c.dt, count:1  } );
-				r = r.concat(callStackToResults(minDT, c, indent + 2));
+				r = r.concat(callStackToResults(minDT, c, indent + 2, filter));
 			}
 		}
 		return r;
+	}
+	
+	function callStackHasName(call:Call, filter:String) : Bool
+	{
+		if (filter == null || filter == "") return true;
+		if (call.name + (call.subname != null ? " / " + call.subname : "") == filter) return true;
+		for (c in call.stack) if (callStackHasName(c, filter)) return true;
+		return false;
 	}
     
     public function getGistogram(results:Iterable<Result>, width:Int)
