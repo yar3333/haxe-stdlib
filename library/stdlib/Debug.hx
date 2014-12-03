@@ -3,7 +3,7 @@ package stdlib;
 import haxe.CallStack;
 import haxe.Log;
 import Type;
-using StringTools;
+using stdlib.StringTools;
 using Lambda;
 
 class Debug
