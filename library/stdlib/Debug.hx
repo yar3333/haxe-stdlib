@@ -119,7 +119,9 @@ class Debug
 		var stack = CallStack.toString(CallStack.callStack()).replace("prototype<.", "").trim();
 		
 		#if js
-		var lines = stack.split("\n").filter(function(s) return s != "Called from module");
+		var lines = stack.split("\n")
+			.filter(function(s) return s != "Called from module")
+			.map(function(s) return s.split("@").map(function(ss) return ss.rtrim("</")).join("@"));
 		var len = 0; for (line in lines) len = Std.max(len, line.indexOf("@"));
 		lines = lines.map(function(line)
 		{
