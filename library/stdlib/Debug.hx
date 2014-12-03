@@ -107,9 +107,7 @@ class Debug
 		}
 	}
 	#else
-	public static inline function assert(e:Bool, message:String=null, ?pos:haxe.PosInfos) : Void
-	{
-	}
+	public static inline function assert(e:Bool, message:String=null, ?pos:haxe.PosInfos) : Void { }
 	#end
 	
 	
