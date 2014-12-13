@@ -17,12 +17,20 @@ class Exception
 
 	public function toString() : String
 	{
+		#if !js
 		return message + "\nStack trace:\n" + CallStack.toString(stack).replace("\n", "\n\t");
+		#else
+		return message;
+		#end
 	}
 	
 	public static function string(e:Dynamic) : String
 	{
+		#if !js
 		return Std.string(e) + (Std.is(e, Exception) ? "" : "\nStack trace:\n" + CallStack.toString(CallStack.exceptionStack()).replace("\n", "\n\t"));
+		#else
+		return Std.string(e);
+		#end
 	}
 	
 	public static function rethrow(exception:Dynamic) : Void
