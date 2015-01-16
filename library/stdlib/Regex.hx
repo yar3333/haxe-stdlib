@@ -18,7 +18,9 @@ using StringTools;
  * Note 4: change characters case is also supported (use $vN and $^N):
  * /(.)b/$^1b/g - will replace "ab" to "Ab".
  * 
- * Note 5: you can use other delimiter than "/":
+ * Note 5: indent/unindent captured text is also supported (use $>N and $<N):
+ * 
+ * Note 6: you can use other delimiter than "/":
  * new Regex("#abc#def#g")
  */
 class Regex
@@ -196,6 +198,8 @@ class Regex
 					{
 						case "^": t = t.toUpperCase();
 						case "v": t = t.toLowerCase();
+						case ">": t = "\t" + t.replace("\n", "\n\t");
+						case "<": t = t.replace("\n\t", "\n"); if (t.startsWith("\t")) t = t.substring(1);
 					}
 					s += t;
 				}
