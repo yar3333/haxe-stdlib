@@ -4,8 +4,8 @@
   "tags": ["exception"],
   "description": "Standard library improvements: exceptions, string triming with a trimed chars specified, min/max for integers and so on.",
   "contributors": ["yar3333"],
-  "releasenote": "Added StringTools.capitalize(). Serializer/Unserializer inherits from std classes. Added Profiler.getResults() minDT and filter params. Added Profiler.reset().",
-  "version": "1.6.1",
+  "releasenote": "Regex: in addition to uppercase/lowercase captured text, from now also possible to indent/unindent captured text.",
+  "version": "1.6.2",
   "url": "https://bitbucket.org/yar3333/haxe-stdlib",
   "dependencies": {}
 }
