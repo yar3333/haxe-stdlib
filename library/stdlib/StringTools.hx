@@ -6,9 +6,9 @@ class StringTools
 	
 	public static inline function urlDecode( s : String ) : String return std.StringTools.urlDecode(s);
 
-	public static inline function htmlEscape( s : String ) : String return std.StringTools.htmlEscape(s);
+	public static inline function htmlEscape( s : String ) : String return std.StringTools.replace(std.StringTools.htmlEscape(s), "\n", "&#xA;");
 
-	public static inline function htmlUnescape( s : String ) : String return std.StringTools.htmlUnescape(s);
+	public static inline function htmlUnescape( s : String ) : String return std.StringTools.htmlUnescape(std.StringTools.replace(s, "&#xA;", "\n"));
 
 	public static inline function startsWith( s : String, start : String ) return std.StringTools.startsWith(s, start);
 
