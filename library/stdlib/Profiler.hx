@@ -117,7 +117,7 @@ class Profiler
 		end();
 	}
 	
-	public function measureResult<T>(name:String, ?subname:String, f:Void->T)
+	public function measureResult<T>(name:String, ?subname:String, f:Void->T) : T
 	{
 		begin(name, subname);
 		var r : T = null;
