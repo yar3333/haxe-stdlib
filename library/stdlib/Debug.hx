@@ -91,18 +91,20 @@ class Debug
 	}
 	
 	#if debug
-	public static function assert(e:Bool, message:String=null, ?pos:haxe.PosInfos) : Void
+	public static function assert(e:Bool, message="error", ?pos:haxe.PosInfos) : Void
 	{
 		if (!e) 
 		{
-			if (message == null) message = "";
-			throw "ASSERT " + message + " in " + pos.fileName + " at line " + pos.lineNumber;
+			var s = "ASSERT " + message + " in " + pos.fileName + " at line " + pos.lineNumber;
+			#if (js && xpcom)
+			untyped xpcom.Components.utils.reportError(s);
+			#end
+			throw s;
 		}
 	}
 	#else
-	public static inline function assert(e:Bool, message:String=null, ?pos:haxe.PosInfos) : Void { }
+	public static inline function assert(e:Bool, ?message:String, ?pos:haxe.PosInfos) : Void { }
 	#end
-	
 	
 	#if debug
 	public static function traceStack(v:Dynamic, ?pos:haxe.PosInfos) : Void
