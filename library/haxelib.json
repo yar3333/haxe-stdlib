@@ -4,8 +4,8 @@
   "tags": ["exception"],
   "description": "Standard library improvements: exceptions, string triming with a trimed chars specified, min/max for integers and so on.",
   "contributors": ["yar3333"],
-  "releasenote": "Remove profiler from readme. Log assert error for xpcom platform.",
-  "version": "1.7.1",
+  "releasenote": "Exception call stack fix.",
+  "version": "1.7.2",
   "url": "https://bitbucket.org/yar3333/haxe-stdlib",
   "dependencies": {}
 }
