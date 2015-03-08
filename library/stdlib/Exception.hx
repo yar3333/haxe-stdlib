@@ -17,7 +17,7 @@ class Exception
 
 	public function toString() : String
 	{
-		#if !js
+		#if (!js || xpcom)
 		return message + "\nStack trace:\n" + CallStack.toString(stack).replace("\n", "\n\t");
 		#else
 		return message;
@@ -26,8 +26,18 @@ class Exception
 	
 	public static function string(e:Dynamic) : String
 	{
-		#if !js
-		return Std.string(e) + (Std.is(e, Exception) ? "" : "\nStack trace:\n" + CallStack.toString(CallStack.exceptionStack()).replace("\n", "\n\t"));
+		#if (!js || xpcom)
+		var r = Std.string(e);
+		if (!Std.is(e, Exception))
+		{
+			#if js
+			var stack = Std.is(e, js.Error) ? e.stack : "";
+			#else
+			var stack = CallStack.toString(CallStack.exceptionStack());
+			#end
+			if (stack != "") r += "\nStack trace:\n" + stack.replace("\n", "\n\t");
+		}
+		return r;
 		#else
 		return Std.string(e);
 		#end
