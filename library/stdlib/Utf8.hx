@@ -130,7 +130,7 @@ class Utf8 extends haxe.Utf8
 		return r.toString();
 	}
 	
-	static function htmlUnescapeChar(escape:String) : Int
+	static function htmlUnescapeChar(escape:String) : Null<Int>
 	{
 		if (escape.startsWith("#x")) return Std.parseInt("0x" + escape.substr(2));
 		else
