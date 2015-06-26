@@ -140,4 +140,16 @@ class Debug
 	{
 	}
 	#end
+	
+	public static function methodMustBeOverriden(_this:Dynamic, ?pos:haxe.PosInfos) : Dynamic
+	{
+		throw new Exception("Method " + pos.methodName + "() must be overriden in class " + Type.getClassName(Type.getClass(_this)) + ".");
+		return null;
+	}
+	
+	public static function methodNotSupported(_this:Dynamic, ?pos:haxe.PosInfos) : Dynamic
+	{
+		throw new Exception("Method " + pos.methodName + "() is not supported by class " + Type.getClassName(Type.getClass(_this)) + ".");
+		return null;
+	}
 }
