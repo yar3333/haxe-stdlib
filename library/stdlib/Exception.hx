@@ -13,12 +13,13 @@ class Exception
 		this.message = message == null ? "" : message;
 		stack = CallStack.callStack();
 		stack.shift();
+		stack.shift();
 	}
 
 	public function toString() : String
 	{
 		#if (!js || xpcom)
-		return message + "\nStack trace:\n" + CallStack.toString(stack).replace("\n", "\n\t");
+		return message + "\nStack trace:\n\t" + StringTools.ltrim(CallStack.toString(stack)).replace("\n", "\n\t");
 		#else
 		return message;
 		#end
@@ -35,7 +36,7 @@ class Exception
 			#else
 			var stack = CallStack.toString(CallStack.exceptionStack());
 			#end
-			if (stack != "") r += "\nStack trace:\n" + stack.replace("\n", "\n\t");
+			if (stack != "") r += "\nStack trace:\n\t" + StringTools.ltrim(stack).replace("\n", "\n\t");
 		}
 		return r;
 		#else
