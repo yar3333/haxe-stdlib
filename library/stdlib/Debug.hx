@@ -91,19 +91,28 @@ class Debug
 	}
 	
 	#if debug
-	public static function assert(e:Bool, message="error", ?pos:haxe.PosInfos) : Void
+	/**
+	 * Message can be a string or function Void->String.
+	 */
+	public static function assert(e:Bool, ?message:Dynamic, ?pos:haxe.PosInfos) : Void
 	{
 		if (!e) 
 		{
-			var s = "ASSERT " + message + " in " + pos.fileName + " at line " + pos.lineNumber;
+			if (message == null) message = "error";
+			else
+			if (Reflect.isFunction(message)) message = message();
+			
+			var s = "ASSERT " + Std.string(message) + " in " + pos.fileName + " at line " + pos.lineNumber;
 			#if (js && xpcom)
 			untyped xpcom.Components.utils.reportError(s);
 			#end
-			throw s;
+			var r = new Exception(s);
+			r.stack.shift();
+			throw r;
 		}
 	}
 	#else
-	public static inline function assert(e:Bool, ?message:String, ?pos:haxe.PosInfos) : Void { }
+	public static inline function assert(e:Bool, ?message:Dynamic, ?pos:haxe.PosInfos) : Void { }
 	#end
 	
 	#if debug
