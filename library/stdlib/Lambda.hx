@@ -1,7 +1,8 @@
 package stdlib;
 
-typedef StdLambda = std.Lambda;
+#if !macro
 
+@:build(stdlib.Macro.forwardStaticMethods(std.Lambda))
 class Lambda
 {
 	public static function findIndex<A>(it:Iterable<A>, f:A->Bool) : Int
@@ -23,3 +24,9 @@ class Lambda
 		}
 	}
 }
+
+#else
+
+typedef Lambda = std.Lambda;
+
+#end
