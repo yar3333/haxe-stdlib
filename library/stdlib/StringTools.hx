@@ -1,21 +1,10 @@
 package stdlib;
 
+#if !macro
+
+@:build(stdlib.Macro.forwardStaticMethods(std.StringTools))
 class StringTools 
 {
-	public static inline function urlEncode( s : String ) : String return std.StringTools.urlEncode(s);
-	
-	public static inline function urlDecode( s : String ) : String return std.StringTools.urlDecode(s);
-
-	public static inline function htmlEscape( s : String ) : String return std.StringTools.replace(std.StringTools.htmlEscape(s), "\n", "&#xA;");
-
-	public static inline function htmlUnescape( s : String ) : String return std.StringTools.htmlUnescape(std.StringTools.replace(s, "&#xA;", "\n"));
-
-	public static inline function startsWith( s : String, start : String ) return std.StringTools.startsWith(s, start);
-
-	public static inline function endsWith( s : String, end : String ) return std.StringTools.endsWith(s, end);
-
-	public static inline function isSpace( s : String, pos : Int ) : Bool return std.StringTools.isSpace(s, pos);
-
 	public static function ltrim( s : String, chars : String = null ) : String
     {
         #if php
@@ -62,19 +51,7 @@ class StringTools
 		return rtrim(ltrim(s, chars), chars);
         #end
     }
-
-	public static inline function rpad( s : String, c : String, l : Int ) : String return std.StringTools.rpad(s, c, l);
-
-	public static inline function lpad( s : String, c : String, l : Int ) : String return std.StringTools.lpad(s, c, l);
-
-	public static inline function replace( s : String, sub : String, by : String ) : String return std.StringTools.replace(s, sub, by);
-
-	public static inline function hex( n : Int, ?digits : Int ) return std.StringTools.hex(n, digits);
-
-	public static inline function fastCodeAt( s : String, index : Int ) : Int return std.StringTools.fastCodeAt(s, index);
-
-	public static inline function isEOF( c : Int ) : Bool return std.StringTools.isEof(c);
-    
+	
 	public static inline function hexdec(s : String) : Int
 	{
 		#if php
@@ -215,3 +192,9 @@ class StringTools
 	
 	public static function capitalize(s:String) : String return isEmpty(s) ? s : s.substr(0, 1).toUpperCase() + s.substr(1);
 }
+
+#else
+
+typedef StringTools = std.StringTools;
+
+#end

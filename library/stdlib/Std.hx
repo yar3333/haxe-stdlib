@@ -1,13 +1,10 @@
 package stdlib;
 
+#if !macro
+
+@:build(stdlib.Macro.forwardStaticMethods(std.Std))
 class Std 
 {
-	public static inline function is( v : Dynamic, t : Dynamic ) : Bool return std.Std.is(v, t);
-	
-	public static inline function string( s : Dynamic ) : String return std.Std.string(s);
-	
-	public static inline function int( x : Float ) : Int return std.Std.int(x);
-	
 	public static function parseInt( x : String, ?defaultValue:Int ) : Null<Int>
 	{
 		return x != null
@@ -21,8 +18,6 @@ class Std
 			? (~/^\s*[+-]?\s*\d{1,9}(?:[.]\d+)?(?:e[+-]?\d{1,9})?\s*$/.match(x) ? std.Std.parseFloat(x) : defaultValue)
 			: defaultValue;
 	}
-	
-	public static inline function random( x : Int ) : Int { return std.Std.random(x);  }
 	
     public static function bool(v:Dynamic) : Bool
     {
@@ -79,3 +74,9 @@ class Std
 		return r;
 	}
 }
+
+#else
+
+typedef Std = std.Std;
+
+#end
