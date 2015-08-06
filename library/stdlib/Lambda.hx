@@ -1,9 +1,8 @@
 package stdlib;
 
-#if !macro
+typedef Lambda = std.Lambda;
 
-@:build(stdlib.Macro.forwardStaticMethods(std.Lambda))
-class Lambda
+class LambdaEx
 {
 	public static function findIndex<A>(it:Iterable<A>, f:A->Bool) : Int
 	{
@@ -23,10 +22,22 @@ class Lambda
 			arr.insert(pos++, e);
 		}
 	}
+	
+	public static function extract<A>(arr:Array<A>, f:A->Bool) : Array<A>
+	{
+		var r = [];
+		var i = 0; while (i < arr.length)
+		{
+			if (f(arr[i]))
+			{
+				r.push(arr[i]);
+				arr.splice(i, 1);
+			}
+			else
+			{
+				i++;
+			}
+		}
+		return r;
+	}
 }
-
-#else
-
-typedef Lambda = std.Lambda;
-
-#end
