@@ -4,8 +4,8 @@
   "tags": ["exception"],
   "description": "Standard library improvements: exceptions, string triming with a trimed chars specified, min/max for integers and so on.",
   "contributors": ["yar3333"],
-  "releasenote": "README fix.",
-  "version": "1.8.2",
+  "releasenote": "Simplify Lambda.",
+  "version": "1.8.3",
   "url": "https://bitbucket.org/yar3333/haxe-stdlib",
   "dependencies": {}
 }
