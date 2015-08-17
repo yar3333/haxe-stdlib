@@ -66,13 +66,6 @@ class Std
 	public static inline function max(a:Int, b:Int) : Int return a > b ? a : b;
    
 	public static inline function sign(n:Float) : Int return n > 0 ? 1 : (n < 0 ? -1 : 0);
-   
-	public static function array<T>(it:Iterator<T>) : Array<T>
-	{
-		var r = new Array<T>();
-		for (e in it) r.push(e);
-		return r;
-	}
 }
 
 #else
