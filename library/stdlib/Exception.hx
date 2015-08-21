@@ -53,14 +53,14 @@ class Exception
 		#end
 	}
 	
-	static function wrap(exception:Dynamic) : Exception
+	public static function wrap(e:Dynamic) : Exception
 	{
-		if (!Std.is(exception, Exception))
+		if (!Std.is(e, Exception))
 		{
-			var r = new Exception(Std.string(exception));
+			var r = new Exception(Std.string(e));
 			r.stack = CallStack.exceptionStack();
 			return r;
 		}
-		return exception;
+		return e;
 	}
 }
