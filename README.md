@@ -12,7 +12,6 @@ Std.hash(obj)         // make a map from object fields
 Std.min(a, b)         // min for Int
 Std.max(a, b)         // max for Int
 Std.sign(f)           // return -1.0 / 0.0 / +1.0
-Std.array(it)         // return array from iterator: Std.array(map.keys())
 ```
 
 ### stdlib.StringTools class extends std.StringTools ###
@@ -72,4 +71,22 @@ var s = Uuid.newUuid();
 Debug.assert(condition, message); // throw exception if condition is false
 
 trace(Debug.getDump(obj)); // dump obj
+```
+
+### stdlib.Lambda module ###
+```haxe
+use stdlib.Lambda;
+
+arr.insertRange(pos, arr2)      // insert many items into specified position
+arr.extract(item->Bool)         // remove items from array by predicate and return them
+
+iterable.findIndex(item->Bool)  // find item index by predicate (from start)
+iterable.sorted(?cmpFunc)       // return sorted array by the iterable (if `cmp` is not specified then `Reflect.compare()` will be used)
+
+iterator.array()
+iterator.map(item->item2)
+iterator.filter(item->Bool)
+iterator.count(?pred)
+iterator.findIndex(item->Bool)
+iterator.sorted(?cmp)
 ```
