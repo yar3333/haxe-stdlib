@@ -75,7 +75,7 @@ trace(Debug.getDump(obj)); // dump obj
 
 ### stdlib.Lambda module ###
 ```haxe
-use stdlib.Lambda;
+using stdlib.Lambda;
 
 arr.insertRange(pos, arr2)      // insert many items into specified position
 arr.extract(item->Bool)         // remove items from array by predicate and return them
