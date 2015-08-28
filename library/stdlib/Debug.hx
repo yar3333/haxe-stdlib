@@ -90,7 +90,7 @@ class Debug
 		return s;
 	}
 	
-	#if debug
+	#if !no_traces
 	/**
 	 * Message can be a string or function Void->String.
 	 */
@@ -115,7 +115,7 @@ class Debug
 	public static inline function assert(e:Bool, ?message:Dynamic, ?pos:haxe.PosInfos) : Void { }
 	#end
 	
-	#if debug
+	#if !no_traces
 	public static function traceStack(v:Dynamic, ?pos:haxe.PosInfos) : Void
 	{
 		var stack = CallStack.toString(CallStack.callStack()).replace("prototype<.", "").trim();
