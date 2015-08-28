@@ -4,8 +4,8 @@
   "tags": ["exception"],
   "description": "Standard library improvements: exceptions, string triming with a trimed chars specified, min/max for integers and so on.",
   "contributors": ["yar3333"],
-  "releasenote": "Simplify Lambda.",
-  "version": "1.8.3",
+  "releasenote": "Breaking change: use Lambda.array() instead of Std.array(). Exception.wrap() now public. Debug: \"#if debug\" became \"#if !no_traces\" inside asserts.",
+  "version": "1.9.0",
   "url": "https://bitbucket.org/yar3333/haxe-stdlib",
   "dependencies": {}
 }
