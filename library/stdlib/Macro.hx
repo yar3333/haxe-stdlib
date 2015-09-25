@@ -8,6 +8,9 @@ using Lambda;
 
 class Macro
 {
+	/**
+	 * Build macro to inherit static methods from specified class.
+	 */
 	public static function forwardStaticMethods(classPath:ExprOf<Class<Dynamic>>) : Array<Field>
 	{
 		var className = classPath.toString();
@@ -17,7 +20,7 @@ class Macro
 			switch (classType)
 			{
 				case TInst(t, params):
-					return buildExtendsStaticsInner(t.get());
+					return forwardStaticMethodsInner(t.get());
 				case _:
 					Context.error(className + " must be a class", Context.getLocalClass().get().pos);
 			}
@@ -29,7 +32,7 @@ class Macro
 		return null;
 	}
 	
-	static function buildExtendsStaticsInner(superKlass:ClassType) : Array<Field>
+	static function forwardStaticMethodsInner(superKlass:ClassType) : Array<Field>
 	{
 		var fields = Context.getBuildFields();
 		
@@ -61,6 +64,41 @@ class Macro
 		}
 		
 		return fields;
+	}
+	
+	/**
+	 * Compiler macro to expose all types from package recursively.
+	 */
+	public static function expose(?pack:String)
+	{
+		Context.onGenerate(function(types)
+		{
+			for (t in types)
+			{
+				var name;
+				var b : BaseType;
+				
+				switch (t)
+				{
+					case TInst(c, _):
+						name = c.toString();
+						b = c.get();
+						
+					case TEnum(e, _):
+						name = e.toString();
+						b = e.get();
+						
+					default:
+						continue;
+				}
+				
+				var p = b.pack.join(".");
+				if (pack == null || pack == "" || p == pack || name == pack || StringTools.startsWith(p, pack + "."))
+				{
+					b.meta.add(":expose", [], Context.currentPos());
+				}
+			}
+		});
 	}
 	
 	static function getAccess(field:ClassField) : Array<Access>
