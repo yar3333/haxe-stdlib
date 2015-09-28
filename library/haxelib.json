@@ -4,8 +4,8 @@
   "tags": ["exception"],
   "description": "Standard library improvements: exceptions, string triming with a trimed chars specified, min/max for integers and so on.",
   "contributors": ["yar3333"],
-  "releasenote": "Improve README.",
-  "version": "1.9.2",
+  "releasenote": "Add Macro.expose(pack). Refactor FileSystem.",
+  "version": "1.9.3",
   "url": "https://bitbucket.org/yar3333/haxe-stdlib",
   "dependencies": {}
 }
