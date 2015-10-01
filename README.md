@@ -30,7 +30,7 @@ StringTools.addcslashes(s) // like addcslashes in php
 ```haxe
 try
 {
-   if (isBad1) throw new Exception("smart exception"); // guarantees you to have call stack in the catch
+   if (isBad1) throw new Exception("smart exception"); // guarantees you to have a call stack in the catch
    if (isBad2) throw "native exception";
 }
 catch (e:Dynamic)
@@ -57,7 +57,7 @@ click.call({ a:10, b:"xyz" });
 ```
 
 ### stdlib.Regex class ###
-Full-form regex support like /search/replacement/flags. Substitutions $0-$9 in replacement is also supported.
+Full-form regex support like /search/replacement/flags. Substitutions $0-$9 in replacement are also supported.
 ```haxe
 var re = new Regex("/a(.)/$1z/g");
 trace(re.replace("3ab4")); // output is: 3bz4
