@@ -2,6 +2,10 @@ package stdlib;
 
 typedef Lambda = std.Lambda;
 
+#if slambda
+typedef Slambda = std.Slambda;
+#end
+
 class LambdaArray
 {
 	public static function insertRange<A>(arr:Array<A>, pos:Int, range:Array<A>) : Void
