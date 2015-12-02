@@ -64,6 +64,8 @@ class Std
 	public static inline function min(a:Int, b:Int) : Int return a < b ? a : b;
    
 	public static inline function max(a:Int, b:Int) : Int return a > b ? a : b;
+	
+	public static inline function abs(x:Int) : Int return x >= 0 ? x : -x;
    
 	public static inline function sign(n:Float) : Int return n > 0 ? 1 : (n < 0 ? -1 : 0);
 }
