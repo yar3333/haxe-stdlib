@@ -11,16 +11,18 @@ using StringTools;
  * Note 1: flag "g" is always exists, so you can omit it.
  * 
  * Note 2: you can use nonestandard flag "r" to repeat search&replace while string changed.
+ *
+ * Note 3: you can use nonestandard flag "z" to smarty treating spaces as "[ \t\r\n]*" or "[ \t\r\n]+".
  * 
- * Note 3: you can specify additional "except" part at the end:
+ * Note 4: you can specify additional "except" part at the end:
  * /a.c/123/g/a([xy])c - will replace "abc" to "123", but not "axc" or "ayc".
  * 
- * Note 4: change characters case is also supported (use $vN and $^N):
- * /(.)b/$^1b/g - will replace "ab" to "Ab".
+ * Note 5: change characters case is also supported (use $vN and $^N):
+ * /(.)b/$^1b/ - will replace "ab" to "Ab".
  * 
- * Note 5: indent/unindent captured text is also supported (use $>N and $<N):
+ * Note 6: indent/unindent captured text is also supported (use $>N and $<N):
  * 
- * Note 6: you can use other delimiter than "/":
+ * Note 7: you can use other delimiter than "/":
  * new Regex("#abc#def#g")
  */
 class Regex
@@ -103,6 +105,24 @@ class Regex
 			
 			repeat = flags.indexOf("r") >= 0;
 			flags = flags.replace("r", "").replace("g", "");
+			
+			if (flags.indexOf("z") >= 0)
+			{
+				flags = flags.replace("z", "");
+				search = ~/[ \t]+/g.map(search, function(re:EReg)
+				{
+					var left = re.matchedLeft();
+					if (left != "") left = left.charAt(left.length - 1);
+					
+					var right = re.matchedRight();
+					if (right != "") right = right.charAt(0);
+					
+					if (left == "") return "[ \\t\\r\\n]*" + (~/_a-zA-Z0-9/.match(right) ? "\\b" : "");
+					if (right == "") return (~/_a-zA-Z0-9/.match(left) ? "\\b" : "") + "[ \\t\\r\\n]*";
+					if (~/_a-zA-Z0-9/.match(left) && ~/_a-zA-Z0-9/.match(right)) return "[ \\t\\r\\n]+";
+					return "[ \\t\\r\\n]*";
+				});
+			}
 		}
 		else
 		{
