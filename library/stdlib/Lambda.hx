@@ -79,6 +79,12 @@ class LambdaIterator
 		return r;
 	}
 	
+	public static function exists<A>(it:Iterator<A>, pred:A->Bool) : Bool
+	{
+		for (e in it) if (pred(e)) return true;
+		return false;
+	}
+	
 	public static function count<A>(it:Iterator<A>, ?pred:A->Bool)
 	{
 		var n = 0;
