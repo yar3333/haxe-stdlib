@@ -62,6 +62,8 @@ class Utf8 extends haxe.Utf8
 	{
 		var r = new Utf8();
 		
+		// TODO: CDATA suppport
+		
 		var escape : String = null;
 		
 		Utf8.iter(s, function(c:Int)
@@ -162,6 +164,7 @@ class Utf8 extends haxe.Utf8
 				"lt" => "<".code,
 				"gt" => ">".code,
 				"quot" => "\"".code,
+				"apos" => "'".code,
 				"euro" => "€".code,
 				"iexcl" => "¡".code,
 				"cent" => "¢".code,
