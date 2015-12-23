@@ -4,8 +4,8 @@
   "tags": ["exception"],
   "description": "Standard library improvements: exceptions, string triming with a trimed chars specified, min/max for integers and so on.",
   "contributors": ["yar3333"],
-  "releasenote": "stdlib.Lambda now automatically do \"using Slambda\" if that library linked.",
-  "version": "1.9.5",
+  "releasenote": "There are no breaking changes. Regex: \"z\" flag (to smarty threat spaces). Std.abs() for Int. iterator.exists().",
+  "version": "2.0.0",
   "url": "https://bitbucket.org/yar3333/haxe-stdlib",
   "dependencies": {}
 }
