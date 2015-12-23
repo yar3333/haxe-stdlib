@@ -144,7 +144,7 @@ class Utf8 extends haxe.Utf8
 				"<".code => "&lt;",
 				">".code => "&gt;",
 				"\"".code => "&quot;",
-				"'".code => "&#39;",
+				"'".code => "&apos;",
 				"\r".code => "&#xD;",
 				"\n".code => "&#xA;"
 			];
