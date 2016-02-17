@@ -14,9 +14,13 @@ class Std
 	
 	public static function parseFloat( x : String, ?defaultValue:Float ) : Null<Float>
 	{
-		return x != null
-			? (~/^\s*[+-]?\s*\d{1,9}(?:[.]\d+)?(?:e[+-]?\d{1,9})?\s*$/.match(x) ? std.Std.parseFloat(x) : defaultValue)
-			: defaultValue;
+		if (x == null) return defaultValue;
+		if (~/^\s*[+-]?\s*\d{1,20}(?:[.]\d+)?(?:e[+-]?\d{1,20})?\s*$/.match(x))
+		{
+			var r = std.Std.parseFloat(x);
+			return !Math.isNaN(r) ? r : defaultValue;
+		}
+		return defaultValue;
 	}
 	
     public static function bool(v:Dynamic) : Bool
