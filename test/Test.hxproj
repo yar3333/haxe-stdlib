@@ -4,19 +4,19 @@
   <output>
     <movie outputType="Application" />
     <movie input="" />
-    <movie path="test.n" />
+    <movie path="bin" />
     <movie fps="0" />
     <movie width="0" />
     <movie height="0" />
-    <movie version="1" />
+    <movie version="0" />
     <movie minorVersion="0" />
-    <movie platform="Neko" />
+    <movie platform="PHP" />
     <movie background="#FFFFFF" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="..\library" />
-    <class path="." />
+    <class path="src" />
   </classpaths>
   <!-- Build options -->
   <build>
@@ -37,7 +37,7 @@
   </compileTargets>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
-    <!-- example: <hidden path="..." /> -->
+    <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
   <preBuildCommand />
