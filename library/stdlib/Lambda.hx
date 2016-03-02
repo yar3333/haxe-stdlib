@@ -65,6 +65,17 @@ class LambdaIterator
 		return r;
 	}
 	
+	public static function indexOf<A>(it:Iterator<A>, elem:A) : Int
+	{
+		var r = 0;
+		while (it.hasNext())
+		{
+			if (it.next() == elem) return r;
+			r++;
+		}
+		return -1;
+	}
+	
 	public static function map<A,R>(it:Iterator<A>, conv:A->R) : Array<R>
 	{
 		var r = new Array<R>();
