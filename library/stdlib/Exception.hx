@@ -13,7 +13,6 @@ class Exception
 		this.message = message == null ? "" : message;
 		stack = CallStack.callStack();
 		stack.shift();
-		stack.shift();
 	}
 
 	public function toString() : String
