@@ -110,3 +110,31 @@ iterator.count(?pred)
 iterator.findIndex(item->Bool)
 iterator.sorted(?cmpFunc)
 ```
+
+### stdlib.AbstractClass ###
+
+```haxe
+class MyBaseClass implements stdlib.AbstractClass
+{
+	function new() {} // private constructor must presents
+	
+	public function outer()
+	{
+		inner(10);
+	}
+	
+	function inner(n:Int) : Void; // no body!
+}
+
+class MyClass extends MyBaseClass
+{
+	public function new() super(); // to allow instantiating
+	
+	// implement abstract function
+	override function inner(n:Int)
+	{
+		trace(n); 
+	}
+}
+```
+
