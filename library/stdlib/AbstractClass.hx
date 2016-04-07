@@ -15,6 +15,7 @@ interface AbstractClass {}
 
 private typedef StringMap<T> = Map<String, T>;
 
+@:noCompletion
 class AbstractClassBuilder
 {
 	#if macro
