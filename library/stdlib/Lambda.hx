@@ -33,6 +33,13 @@ class LambdaArray
 		}
 		return r;
 	}
+	
+	public static function spliceEx<A>(arr:Array<A>, pos:Int, ?len:Int, ?replacement:Array<A>) : Array<A>
+	{
+		var r = arr.splice(pos, len != null ? len : arr.length - pos);
+		if (replacement != null) insertRange(arr, pos, replacement);
+		return r;
+	}
 }
 
 class LambdaIterable
