@@ -112,28 +112,20 @@ iterator.sorted(?cmpFunc)
 ```
 
 ### stdlib.AbstractClass ###
-
+A macro to support classic abstract classes. Example:
 ```haxe
 class MyBaseClass implements stdlib.AbstractClass
 {
-	function new() {} // private constructor must presents
-	
-	public function outer()
-	{
-		inner(10);
-	}
-	
-	function inner(n:Int) : Void; // no body!
+	function new() {} // private constructor to prevent class instantiating
+	public function f() : Void; // no body!
 }
 
 class MyClass extends MyBaseClass
 {
-	public function new() super(); // to allow instantiating
-	
-	// implement abstract function
-	override function inner(n:Int)
+	public function new() super(); // allow class instantiating
+	override public function f()
 	{
-		trace(n); 
+		// method implementataion
 	}
 }
 ```
