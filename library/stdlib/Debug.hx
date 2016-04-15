@@ -31,11 +31,22 @@ class Debug
 				else
 				if (c == Array)
 				{
-					s = "ARRAY(" + v.length + ")\n";
-					for (item in cast(v, Array<Dynamic>))
+					#if php
+					if (untyped __call__("is_array", v))
 					{
-						s += prefix + getDump(item, limit, level + 1, prefix);
+						s = getDumpPhpArray(v, limit, level, prefix);
 					}
+					else
+					{
+					#end
+						s = "ARRAY(" + v.length + ")\n";
+						for (item in cast(v, Array<Dynamic>))
+						{
+							s += prefix + getDump(item, limit, level + 1, prefix);
+						}
+					#if php
+					}
+					#end
 				}
 				else
 				if (c == List)
@@ -73,8 +84,15 @@ class Debug
 			case ValueType.TObject:
 				s = "OBJECT" + "\n" + getObjectDump(v, limit, level + 1, prefix);
 			
-			case ValueType.TFunction, ValueType.TUnknown:
-				s = "FUNCTION OR UNKNOW\n";
+			case ValueType.TFunction:
+				s = "FUNCTION\n";
+			
+			case ValueType.TUnknown:
+				#if php
+					s = getDumpPhpNative(v);
+				#else
+					s = "UNKNOW\n";
+				#end
 		};
 		
 		return s;
@@ -89,6 +107,39 @@ class Debug
 		}
 		return s;
 	}
+	
+	#if php
+	static function getDumpPhpArray(v:Dynamic, limit:Int, level:Int, prefix:String) : String
+	{
+		var s : String;
+		
+		if (untyped __php__("array_keys($v) !== range(0, count($v) - 1)"))
+		{
+			s = "PHP_ASSOCIATIVE_ARRAY\n";
+			for (k in php.Lib.toHaxeArray(untyped __call__("array_keys", v)))
+			{
+				s += prefix + k + " => " + getDump(v[k], limit, level + 1, prefix);
+			}
+		}
+		else
+		{
+			s = "PHP_ARRAY(" + untyped __call__("count", v) + ")\n";
+			for (k in php.Lib.toHaxeArray(untyped __call__("array_keys", v)))
+			{
+				s += prefix + getDump(v[k], limit, level + 1, prefix);
+			}
+		}
+		
+		return s;
+	}
+	
+	static function getDumpPhpNative(v:Dynamic) : String
+	{
+		untyped __call__("ob_start");
+		untyped __call__("var_dump", v);
+		return untyped __call__("ob_get_clean");
+	}
+	#end
 	
 	#if !no_traces
 	/**
