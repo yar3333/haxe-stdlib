@@ -113,7 +113,7 @@ class AbstractClassBuilder
 			}
 		}
 		
-		if (!allAbsFields.empty() && cls.constructor != null && cls.constructor.get().isPublic)
+		if (!cls.isExtern && !allAbsFields.empty() && cls.constructor != null && cls.constructor.get().isPublic)
 		{
 			var missingFields = [];
 			for (k in allAbsFields.keys()) missingFields.push(k);
