@@ -8,6 +8,14 @@ typedef Slambda = std.Slambda;
 
 class LambdaArray
 {
+	public static function addRange<A>(arr:Array<A>, range:Array<A>) : Void
+	{
+		for (e in range)
+		{
+			arr.push(e);
+		}
+	}
+	
 	public static function insertRange<A>(arr:Array<A>, pos:Int, range:Array<A>) : Void
 	{
 		for (e in range)
