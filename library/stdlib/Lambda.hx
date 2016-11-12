@@ -63,6 +63,20 @@ class LambdaIterable
 		return -1;
 	}
 	
+	public static function findLastIndex<A>(it:Iterable<A>, f:A->Bool) : Int
+	{
+		var r = -1;
+		
+		var n = 0;
+		for (x in it)
+		{
+			if (f(x)) r = n;
+			n++;
+		}
+		
+		return r;
+	}
+	
 	public static function sorted<A>(it:Iterable<A>, ?cmp:A->A->Int) : Array<A>
 	{
 		var r = Lambda.array(it);
@@ -128,6 +142,20 @@ class LambdaIterator
 			n++;
 		}
 		return -1;
+	}
+	
+	public static function findLastIndex<A>(it:Iterator<A>, f:A->Bool) : Int
+	{
+		var r = -1;
+		
+		var n = 0;
+		for (x in it)
+		{
+			if (f(x)) r = n;
+			n++;
+		}
+		
+		return r;
 	}
 	
 	public static function sorted<A>(it:Iterator<A>, ?cmp:A->A->Int) : Array<A>
