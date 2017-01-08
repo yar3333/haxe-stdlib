@@ -157,9 +157,9 @@ class AbstractClassBuilder
 						
 						//give a method body so it compiles
 						fun.expr = if (fun.ret == null || switch (fun.ret) { case TPath(p) : p.pack.length == 0 && p.name == "Void"; default: false; })
-							macro throw "abstract method, must override";
+							macro stdlib.Debug.methodMustBeOverriden(this);
 						else
-							macro return throw "abstract method, must override";
+							macro return stdlib.Debug.methodMustBeOverriden(this);
 					}
 				default:
 			}
