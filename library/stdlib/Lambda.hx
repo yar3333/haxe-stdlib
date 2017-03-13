@@ -164,4 +164,19 @@ class LambdaIterator
 		r.sort(cmp != null ? cmp : Reflect.compare);
 		return r;
 	}
+	
+	public static function join<A>(it:Iterator<A>, sep:String) : String
+	{
+		var r = new StringBuf();
+		
+		var isFirst = true;
+		for (x in it)
+		{
+			if (!isFirst) r.add(sep);
+			else          isFirst = false;
+			r.add(Std.string(x));
+		}
+		
+		return r.toString();
+	}
 }
