@@ -191,7 +191,7 @@ class Macro
 	static function exposeType(pack:String, mapToPack:String, type:BaseType)
 	{
 		var fullName = type.pack.concat([type.name]).join(".");
-		if (fullName.startsWith(pack + "."))
+		if ((fullName + ".").startsWith(pack + "."))
 		{
 			type.meta.remove(":expose");
 			
