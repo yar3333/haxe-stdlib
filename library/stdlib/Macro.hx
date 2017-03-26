@@ -1,13 +1,29 @@
 package stdlib;
 
 import haxe.macro.Context;
-import haxe.macro.Type;
 import haxe.macro.Expr;
+import haxe.macro.ExprTools;
+import haxe.macro.PositionTools;
+import haxe.macro.Type;
 using haxe.macro.Tools;
 using Lambda;
+using StringTools;
 
 class Macro
 {
+	/**
+	 * Load text file as string at compile time. Path to file is related to the source file where macro is called.
+	 * Example: `var s = stdlib.Macro.embedFile("test.html");`
+	 */
+	public static macro function embedFile(filePath:Expr)
+	{
+		var path = haxe.io.Path.directory(PositionTools.getInfos(Context.currentPos()).file) + "/" + ExprTools.getValue(filePath);
+		Context.registerModuleDependency(Context.getLocalModule(), path);
+		return sys.FileSystem.exists(path) ? macro $v{sys.io.File.getContent(path)} : macro "";
+	}
+	
+#if macro
+
 	/**
 	 * Build macro to inherit static methods from specified class.
 	 */
@@ -30,6 +46,25 @@ class Macro
 			Context.error("Can't find class " + className, Context.getLocalClass().get().pos);
 		}
 		return null;
+	}
+	
+	/**
+	 * Compiler macro to expose all types from package recursively.
+	 */
+	public static function expose(pack:String, mapToPack:String=null)
+	{
+		Context.onGenerate(function(types)
+		{
+			for (type in types)
+			{
+				switch (type)
+				{
+					case Type.TInst(t, _): exposeType(pack, mapToPack, t.get());
+					case Type.TEnum(t, _): exposeType(pack, mapToPack, t.get());
+					case _:
+				}
+			}
+		});
 	}
 	
 	static function forwardStaticMethodsInner(superKlass:ClassType) : Array<Field>
@@ -64,41 +99,6 @@ class Macro
 		}
 		
 		return fields;
-	}
-	
-	/**
-	 * Compiler macro to expose all types from package recursively.
-	 */
-	public static function expose(?pack:String)
-	{
-		Context.onGenerate(function(types)
-		{
-			for (t in types)
-			{
-				var name;
-				var b : BaseType;
-				
-				switch (t)
-				{
-					case TInst(c, _):
-						name = c.toString();
-						b = c.get();
-						
-					case TEnum(e, _):
-						name = e.toString();
-						b = e.get();
-						
-					default:
-						continue;
-				}
-				
-				var p = b.pack.join(".");
-				if (pack == null || pack == "" || p == pack || name == pack || StringTools.startsWith(p, pack + "."))
-				{
-					b.meta.add(":expose", [], Context.currentPos());
-				}
-			}
-		});
 	}
 	
 	static function getAccess(field:ClassField) : Array<Access>
@@ -187,4 +187,26 @@ class Macro
 		}
 		return [];
 	}
+	
+	static function exposeType(pack:String, mapToPack:String, type:BaseType)
+	{
+		var fullName = type.pack.concat([type.name]).join(".");
+		if (fullName.startsWith(pack + "."))
+		{
+			type.meta.remove(":expose");
+			
+			if (mapToPack == null)
+			{
+				type.meta.add(":expose", [], type.pos);
+			}
+			else
+			{
+				var newFullName = (mapToPack != "" ? mapToPack + "." : "") + fullName.substring(pack.length + 1);
+				type.meta.add(":expose", [ macro $v{newFullName} ], type.pos);
+			}
+		}
+	}
+	
+#end
+
 }
