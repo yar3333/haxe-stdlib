@@ -1,5 +1,7 @@
 package stdlib;
 
+#if sys
+
 #if !macro
 
 @:build(stdlib.Macro.forwardStaticMethods(sys.FileSystem))
@@ -43,5 +45,7 @@ class FileSystem
 #else
 
 typedef FileSystem = sys.FileSystem;
+
+#end
 
 #end
