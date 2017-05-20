@@ -1,5 +1,6 @@
 import stdlib.Regex;
 import stdlib.Utf8;
+import stdlib.Http;
 
 class Test extends haxe.unit.TestCase
 {
