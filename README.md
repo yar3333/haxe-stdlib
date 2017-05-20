@@ -130,3 +130,8 @@ class MyClass extends MyBaseClass
 }
 ```
 
+### stdlib.Http class ###
+This class extends standard `haxe.Http`.
+```haxe
+http.addFile(...) // like fileTransfer(), but can be called many times to add many files
+```
