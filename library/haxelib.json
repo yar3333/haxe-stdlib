@@ -4,8 +4,8 @@
   "tags": ["exception"],
   "description": "Standard library improvements: exceptions, string triming with a trimed chars specified, min/max for integers and so on.",
   "contributors": ["yar3333"],
-  "releasenote": "Add Lambda.findLastIndex().",
-  "version": "2.1.5",
+  "releasenote": "Add `Lambda: it.join()`.<br>\nStringTools: rename `isEmpty()` to `isNullOrEmpty()`.<br>\nAdd `Macro.embedFile()`.<br>\n`Macro.expose()` now support mapping.<br>\nAdd Http class (support sending many files).",
+  "version": "2.2.0",
   "url": "https://bitbucket.org/yar3333/haxe-stdlib",
   "dependencies": {}
 }
