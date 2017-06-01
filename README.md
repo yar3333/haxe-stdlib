@@ -135,3 +135,13 @@ This class extends standard `haxe.Http`.
 ```haxe
 http.addFile(...) // like fileTransfer(), but can be called many times to add many files
 ```
+
+### Promise class ###
+This is regular `js.Promise` improved with `PromiseTools` class.
+```haxe
+// `using` to beauty connection of `PromiseTools` methods to promise instance
+using stdlib.Promise;
+...
+var promise = new Promise(function(resolve, reject) { ... });
+promise.thenPromise(function(resolve, reject) { ... });
+```
