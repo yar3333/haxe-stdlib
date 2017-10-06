@@ -72,6 +72,8 @@ class Std
 	public static inline function abs(x:Int) : Int return x >= 0 ? x : -x;
    
 	public static inline function sign(n:Float) : Int return n > 0 ? 1 : (n < 0 ? -1 : 0);
+	
+	public static inline function downCast<Z, T:Z>(obj:T, _:Class<Z>) : Z return obj;
 }
 
 #else

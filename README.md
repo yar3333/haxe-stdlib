@@ -136,12 +136,8 @@ This class extends standard `haxe.Http`.
 http.addFile(...) // like fileTransfer(), but can be called many times to add many files
 ```
 
-### Promise class ###
-This is regular `js.Promise` improved with `PromiseTools` class.
+### Timer class ###
+This class extends standard `haxe.Timer`.
 ```haxe
-// `using` to beauty connection of `PromiseTools` methods to promise instance
-using stdlib.Promise;
-...
-var promise = new Promise(function(resolve, reject) { ... });
-promise.thenPromise(function(resolve, reject) { ... });
+Timer.delayAsync(1000).then(function(_) trace("Wake up!"));
 ```
