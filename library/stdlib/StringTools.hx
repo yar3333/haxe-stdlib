@@ -137,55 +137,42 @@ class StringTools
 	{
         if (s == null) return "null";
 		
-        var r = new Utf8(s.length + Std.int(s.length/5));
+        var r = '"';
 		
-        r.addChar('"'.code);
-		
-		Utf8.iter(s, function(c)
+		for (c in new UnicodeString(s).iterator())
 		{
             switch (c)
 			{
 				case "\\".code:
-					r.addChar("\\".code);
-					r.addChar("\\".code);
+					r += "\\\\";
 					
 				case '"'.code:
-					r.addChar("\\".code);
-					r.addChar('"'.code);
+					r += "\\\"";
 					
 				case "\t".code:
-					r.addChar("\\".code);
-					r.addChar("t".code);
+					r += "\\t";
 				
 				case "\n".code:
-					r.addChar("\\".code);
-					r.addChar("n".code);
+					r += "\\n";
 					
 				case "\r".code:
-					r.addChar("\\".code);
-					r.addChar("r".code);
+					r += "\\r";
 					
 				default:
 					if (c < 32)
 					{
-						r.addChar("\\".code);
-						r.addChar("u".code);
-						var t = StringTools.hex(c, 4);
-						r.addChar(StringTools.fastCodeAt(t, 0));
-						r.addChar(StringTools.fastCodeAt(t, 1));
-						r.addChar(StringTools.fastCodeAt(t, 2));
-						r.addChar(StringTools.fastCodeAt(t, 3));
+						r += "\\u" + StringTools.hex(c, 4);
 					}
 					else
 					{
-						r.addChar(c);
+						r += String.fromCharCode(c);
 					}
             }
-        });
+        }
 		
-		r.addChar('"'.code);
+		r += '"';
 		
-		return r.toString();
+		return r;
 	}
 	
 	public static function isNullOrEmpty(s:String) : Bool return s == null || s == "";

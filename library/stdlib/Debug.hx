@@ -184,7 +184,7 @@ class Debug
 		stack = lines.slice(1).join("\n");
 		#end
 		
-		trace("TRACE " + (Std.is(v, String) ? v : getDump(v).trim()) + "\nStack trace:\n" + stack, pos);
+		trace("TRACE " + (Std.isOfType(v, String) ? v : getDump(v).trim()) + "\nStack trace:\n" + stack, pos);
 	}
 	#else
 	public static function traceStack(v:Dynamic, ?pos:haxe.PosInfos) : Void

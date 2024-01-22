@@ -28,7 +28,7 @@ class Exception
 	{
 		#if (!js || xpcom)
 		var r = Std.string(e);
-		if (!Std.is(e, Exception))
+		if (!Std.isOfType(e, Exception))
 		{
 			#if js
 			var stack = Std.is(e, js.Error) ? e.stack : "";
@@ -54,7 +54,7 @@ class Exception
 	
 	public static function wrap(e:Dynamic) : Exception
 	{
-		if (!Std.is(e, Exception))
+		if (!Std.isOfType(e, Exception))
 		{
 			var r = new Exception(Std.string(e));
 			r.stack = CallStack.exceptionStack();

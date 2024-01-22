@@ -87,7 +87,7 @@ class Macro
 							access: getAccess(superField),
 							kind: FieldType.FFun(getFunction(superKlassFullName, superField)),
 							pos: superField.pos,
-							meta: []
+							meta: superField.meta.get()
 							
 						};
 						
