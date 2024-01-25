@@ -2,10 +2,6 @@ package stdlib;
 
 typedef Lambda = std.Lambda;
 
-#if slambda
-typedef Slambda = std.Slambda;
-#end
-
 class LambdaArray
 {
 	public static function addRange<A>(arr:Array<A>, range:Array<A>) : Void

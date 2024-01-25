@@ -2,6 +2,8 @@ package stdlib;
 
 #if !macro
 
+using haxe.iterators.StringIteratorUnicode;
+
 @:build(stdlib.Macro.forwardStaticMethods(std.StringTools))
 class StringTools 
 {
@@ -139,7 +141,7 @@ class StringTools
 		
         var r = '"';
 		
-		for (c in new UnicodeString(s).iterator())
+		for (c in StringIteratorUnicode.unicodeIterator(s))
 		{
             switch (c)
 			{
