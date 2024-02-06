@@ -1,5 +1,6 @@
 package stdlib;
 
+import haxe.Exception;
 import haxe.CallStack;
 import haxe.Log;
 import Type;
@@ -157,9 +158,7 @@ class Debug
 			#if (js && xpcom)
 			untyped xpcom.Components.utils.reportError(s);
 			#end
-			var r = new Exception(s);
-			r.stack.shift();
-			throw r;
+			throw new Exception(s);
 		}
 	}
 	#else
@@ -195,6 +194,5 @@ class Debug
 	public static function methodNotSupported(_this:Dynamic, ?pos:haxe.PosInfos) : Dynamic
 	{
 		throw new Exception("Method " + pos.methodName + "() is not supported by class " + Type.getClassName(Type.getClass(_this)) + ".");
-		return null;
 	}
 }
