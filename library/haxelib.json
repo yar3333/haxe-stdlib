@@ -4,8 +4,8 @@
   "tags": ["exception"],
   "description": "Standard library improvements: exceptions, string triming with a trimed chars specified, min/max for integers and so on.",
   "contributors": ["yar3333"],
-  "releasenote": "haxe-4",
-  "version": "2.2.3",
+  "releasenote": "Remove `Debug.methodMustBeOverriden()` and `AbstractClass` due to `abstract` classes in haxe-4. `Exception` class was removed (use `haxe.Exception` and `stdlib.ExceptionTools`).",
+  "version": "3.0.0",
   "url": "https://github.com:yar3333/haxe-stdlib",
   "dependencies": {}
 }
