@@ -1,5 +1,6 @@
 package stdlib;
 
+import haxe.Exception;
 import haxe.CallStack;
 using StringTools;
 

@@ -44,6 +44,11 @@ class LambdaArray
 		if (replacement != null) insertRange(arr, pos, replacement);
 		return r;
 	}
+
+    public static function filterByType<A:{}, T:{}>(arr:Array<A>, klass:Class<T>) : Array<T>
+    {
+        return cast arr.filter(x -> Std.isOfType(x, klass));
+    }
 }
 
 class LambdaIterable
@@ -79,6 +84,16 @@ class LambdaIterable
 		r.sort(cmp != null ? cmp : Reflect.compare);
 		return r;
 	}
+
+    public static function filterByType<A:{}, T:{}>(it:Iterable<A>, klass:Class<T>) : Array<T>
+    {
+        var r = [];
+		for (x in it)
+		{
+			if (Std.isOfType(x, klass)) r.push((cast x : T));
+		}
+        return r;
+    }
 }
 
 class LambdaIterator
