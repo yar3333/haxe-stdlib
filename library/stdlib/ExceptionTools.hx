@@ -8,7 +8,7 @@ class ExceptionTools
 {
 	public static function string(e:Dynamic) : String
 	{
-		if (Std.isOfType(e, haxe.Exception)) return (cast e : haxe.Exception).details();
+		if (Std.isOfType(e, Exception)) return (cast e : Exception).details();
 	
         #if (!js || xpcom)
         var r = Std.string(e);
@@ -36,11 +36,11 @@ class ExceptionTools
         #end
     }
     
-    public static function wrap(e:Dynamic) : haxe.Exception
+    public static function wrap(e:Dynamic) : Exception
     {
-        if (!Std.isOfType(e, haxe.Exception))
+        if (!Std.isOfType(e, Exception))
         {
-            return new haxe.Exception(Std.string(e));
+            return new Exception(Std.string(e));
         }
         return e;
     }    
