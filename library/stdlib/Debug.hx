@@ -157,8 +157,11 @@ class Debug
 			var s = "ASSERT " + Std.string(message) + " in " + pos.fileName + " at line " + pos.lineNumber;
 			#if (js && xpcom)
 			untyped xpcom.Components.utils.reportError(s);
-			#end
+            #elseif js
+            throw new js.lib.Error(s);
+            #else
 			throw new Exception(s);
+            #end
 		}
 	}
 	#else
