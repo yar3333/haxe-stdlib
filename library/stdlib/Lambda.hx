@@ -49,6 +49,20 @@ class LambdaArray
     {
         return cast arr.filter(x -> Std.isOfType(x, klass));
     }
+
+    public static function distinct<A>(arr:Array<A>, ?equFunc:A->A->Bool)
+    {
+        var r = new Array<A>();
+        if (equFunc == null)
+        {
+            for (x in arr) if (!r.contains(x)) r.push(x);
+        }
+        else
+        {
+            for (x in arr) if (!stdlib.Lambda.exists(r, y -> equFunc(x, y))) r.push(x);
+        }
+        return r;
+    }
 }
 
 class LambdaIterable
