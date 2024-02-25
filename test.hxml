@@ -1,0 +1,6 @@
+--js test/bin/test.js
+--library utest
+--class-path library
+--class-path test/src
+--main Main
+--cmd node test/bin/test.js

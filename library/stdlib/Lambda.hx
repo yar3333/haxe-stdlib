@@ -63,6 +63,46 @@ class LambdaArray
         }
         return r;
     }
+
+    #if js
+    overload public extern static inline function toMapMany<A, K>(arr:Array<A>, keySelector:A->K) : js.lib.Map<K, Array<A>>
+    {
+        return toMapManyInner(arr, keySelector, item -> item);
+    }
+    overload public extern static inline function toMapMany<A, K, V>(arr:Array<A>, keySelector:A->K, valueSelector:A->V) : js.lib.Map<K, Array<V>>
+    {
+        return toMapManyInner(arr, keySelector, valueSelector);
+    }
+    static function toMapManyInner<A, K, V>(arr:Array<A>, keySelector:A->K, valueSelector:A->V) : js.lib.Map<K, Array<V>>
+    {
+        var r = new js.lib.Map<K, Array<V>>();
+        for (item in arr)
+        {
+            final k = keySelector(item);
+            if (r.has(k)) r.get(k).push(valueSelector(item));
+            else          r.set(k, cast [ valueSelector(item) ]);
+        }
+        return r;
+    }
+
+    overload public extern static inline function toMapOne<A, K>(arr:Array<A>, keySelector:A->K) : js.lib.Map<K, A>
+    {
+        return toMapOneInner(arr, keySelector, item -> item);
+    }
+    overload public extern static inline function toMapOne<A, K, V>(arr:Array<A>, keySelector:A->K, valueSelector:A->V) : js.lib.Map<K, V>
+    {
+        return toMapOneInner(arr, keySelector, valueSelector);
+    }
+    static function toMapOneInner<A, K, V>(arr:Array<A>, keySelector:A->K, valueSelector:A->V) : js.lib.Map<K, V>
+    {
+        var r = new js.lib.Map<K, V>();
+        for (item in arr)
+        {
+            r.set(keySelector(item), valueSelector(item));
+        }
+        return r;
+    }
+    #end
 }
 
 class LambdaIterable
