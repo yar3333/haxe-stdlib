@@ -138,6 +138,13 @@ class LambdaIterable
 		r.sort(cmp != null ? cmp : Reflect.compare);
 		return r;
 	}
+	
+	public static function reversed<A>(it:Iterable<A>) : Array<A>
+	{
+		var r = Lambda.array(it);
+        r.reverse();
+		return r;
+	}
 
     public static function filterByType<A:{}, T:{}>(it:Iterable<A>, klass:Class<T>) : Array<T>
     {
