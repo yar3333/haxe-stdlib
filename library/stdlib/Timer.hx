@@ -7,9 +7,9 @@ class Timer extends haxe.Timer
 {
 	public static function delayAsync(milliseconds:Int) : js.lib.Promise<{}>
 	{
-		return new js.lib.Promise<{}>(function(resolve:{}->Void, _:Dynamic->Void)
+		return new js.lib.Promise<{}>((resolve, _) ->
 		{
-			haxe.Timer.delay(function() resolve(null), milliseconds);
+			haxe.Timer.delay(() -> resolve(null), milliseconds);
 		});
 	}
 }

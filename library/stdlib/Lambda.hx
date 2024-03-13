@@ -155,6 +155,16 @@ class LambdaIterable
 		}
         return r;
     }
+
+    public static function skipWhile<A>(it:Iterable<A>, f:A->Bool) : Array<A>
+    {
+        final iterator = it.iterator();
+        while (iterator.hasNext() && f(iterator.next())) {}
+        
+        final r = [];
+        while (iterator.hasNext()) r.push(iterator.next());
+        return r;
+    }
 }
 
 class LambdaIterator
