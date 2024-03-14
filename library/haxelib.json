@@ -4,8 +4,8 @@
   "tags": ["exception"],
   "description": "Standard library improvements: exceptions, string triming with a trimed chars specified, min/max for integers and so on.",
   "contributors": ["yar3333"],
-  "releasenote": "Add `Lambda.toMap*()` for js target.",
-  "version": "3.1.2",
+  "releasenote": "+ `Lambda.reversed()` and `Lambda.skipWhile()`",
+  "version": "3.1.3",
   "url": "https://github.com/yar3333/haxe-stdlib",
   "dependencies": {}
 }
